@@ -65,7 +65,8 @@ const Canvas = ({
         const ctx = canvasRef.current?.getContext("2d");
         
         if(ctx){
-            ctx.reset();
+            // ctx.clear(true);
+            // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
         }
         if(side === "both"){
             bothSideCanvas(width,height,0);
@@ -142,6 +143,7 @@ const Canvas = ({
     }
    
     return <canvas 
+                key = {side}
                 style={{backgroundColor }}
                 className="rateCanvas"
                 ref={canvasRef}
