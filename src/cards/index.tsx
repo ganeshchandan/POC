@@ -109,7 +109,7 @@ const Cards = () => {
     const handleMouseEnter = (event : any) => {
         const {dataset} = event.target;
         const {side : datasetID} = dataset;
-        // setClosedCardNo(-1);
+        setClosedCardNo(-1);
         if(side !== datasetID){
             setSide(() => datasetID);
         }
@@ -133,7 +133,7 @@ const Cards = () => {
         {
             renderCards()
         }
-        <div className="showMeAndNextCard">
+        <div className={`showMeAndNextCard ${selectedCardNo !== -1 ? 'cardSelected' : ''}`}>
             <div className="nextCard" 
                 onClick = {handleSetSelectedCard} 
                 onMouseEnter={handleMouseEnter}
