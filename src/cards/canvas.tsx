@@ -6,7 +6,8 @@ const arcDraw = (ctx: CanvasRenderingContext2D,
     [x2, y2] : number[],
     [x3, y3] : number[],
     [x4, y4] : number[],
-    [x5, y5] : number[]
+    [x5, y5] : number[],
+    nextColor: string
     ) => {
     if(ctx){
        ctx.moveTo(x1 , y1);
@@ -17,7 +18,7 @@ const arcDraw = (ctx: CanvasRenderingContext2D,
        ctx.lineTo(x4 , y4);
        ctx.lineTo(x5 , y5);
        ctx.lineTo(x1 , y1);
-       ctx.fillStyle = "rgb(206, 234, 214)";
+       ctx.fillStyle = nextColor;
        ctx.fill("nonzero");
    }
 }
@@ -28,7 +29,8 @@ const fullCanvasDraw = (ctx: CanvasRenderingContext2D,
     [x3, y3] : number[],
     [x4, y4] : number[],
     [x5, y5] : number[],
-    [x6, y6] : number[]
+    [x6, y6] : number[],
+    nextColor: string
     ) => {
     if(ctx){
        ctx.moveTo(x1 , y1);
@@ -40,7 +42,7 @@ const fullCanvasDraw = (ctx: CanvasRenderingContext2D,
         x5, y5, 
         x6, y6);
        ctx.lineTo(x1 , y1);
-       ctx.fillStyle = "rgb(206, 234, 214)";
+       ctx.fillStyle = nextColor;
        ctx.fill("nonzero");
    }
 }
@@ -48,11 +50,13 @@ const fullCanvasDraw = (ctx: CanvasRenderingContext2D,
 interface ICanvas{
     side : TSide;
     backgroundColor : string;
+    nextColor : string;
 }
 
 const Canvas = ({
     side,
-    backgroundColor
+    backgroundColor,
+    nextColor
 } : ICanvas) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const timerRef = useRef<NodeJS.Timeout>();
@@ -69,9 +73,9 @@ const Canvas = ({
             // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
         }
         if(side === "both"){
-            bothSideCanvas(width,height,0);
+            bothSideCanvas(width,height,0, nextColor);
         }else if(side !== "none"){
-            oneSideCanvas(side, width /2 , Math.ceil(halfWidth / 5) , height, 0);
+            oneSideCanvas(side, width /2 , Math.ceil(halfWidth / 5) , height, 0, nextColor);
         }
 
     },[side]);
@@ -80,7 +84,8 @@ const Canvas = ({
         width : number, 
         halfWidth : number , 
         height : number,
-        count : number) => {
+        count : number,
+        nextColor : string) => {
         const ctx = canvasRef.current?.getContext("2d");
         if(ctx){
             let curveWidth = 5*count;
@@ -100,21 +105,23 @@ const Canvas = ({
                 [curveWidth , 0],
                 [x3, height/2],
                 [curveWidth , height],
-                [width, height]
+                [width, height],
+                nextColor
             );
         }
         
 
         if( count <= halfWidth){
             clearTimeout(timerRef.current);
-            const timer = setTimeout(() => oneSideCanvas(side,width,halfWidth,height, count+1), 0);
+            const timer = setTimeout(() => oneSideCanvas(side,width,halfWidth,height, count+1, nextColor), 0);
             timerRef.current = timer;
         }
    }
 
    const bothSideCanvas = (width : number, 
    height : number,
-   count : number) => {
+   count : number,
+   nextColor : string) => {
         const ctx = canvasRef.current?.getContext("2d");
         const halfWidth = width /2;
         if(ctx){
@@ -129,11 +136,12 @@ const Canvas = ({
                 [x1, height],
                 [x4 , height],
                 [x4  -arcWidth , height/2],
-                [x4, 0]
+                [x4, 0],
+                nextColor
             );
             if( x4 >= 0){
                 clearTimeout(timerRef.current);
-                const timer = setTimeout(() => bothSideCanvas(width,height, count+1), 10);
+                const timer = setTimeout(() => bothSideCanvas(width,height, count+1, nextColor), 10);
                 timerRef.current = timer;
             }else{
                 ctx.reset();
