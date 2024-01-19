@@ -23,10 +23,12 @@ const Cards = () => {
         id : 1,
         color : "#0073e6",
         content : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-    })
+    });
+    const [swipedLeftCard, setSwipedLeftCard] = useState(-1)
     const [side, setSide] = useState<TSide>("none")
-
     const {selectedIndex, color} = selectedCard;
+    const [selectedCardNo , setSelectedCardNo] = useState(-1);
+    const [closedCardNo , setClosedCardNo] = useState(-1)
 
     const [contents] = useState([{
         id : 0,
@@ -63,8 +65,13 @@ const Cards = () => {
     }
 ]);
 
+    // useEffect(() => {
+    //     setTimeout(() => setSelectedCardNo((state) => 0), 10000)
+    // }, [])
+
     const handleSetSelectedCard = () => {
         setSide("both");
+        setSwipedLeftCard(selectedIndex);
         setSelectedCard(() => {
             const index = selectedIndex + 1;
             return {
@@ -79,27 +86,46 @@ const Cards = () => {
         const secondIndex =  (selectedIndex + 1) % length;
         const thirdIndex =  (selectedIndex + 2) % length;
         return contents.map(({content}, index) => {
-            // const index = (selectedCard + count) % length;
             let className = "";
-            if(selectedIndex === index){
+            if(index === selectedCardNo){
+                className = " selectedCard"
+            }else if (closedCardNo === index){
+                className = "deselectedCard";
+            } else if(selectedIndex === index){
                 className = `activeCard selectingCard_${side}`;
-            }else if(secondIndex === index){
+            } else if(secondIndex === index){
                 className = "secondCard";
-            }else if(thirdIndex === index){
+            } else if(thirdIndex === index){
                 className = "thirdCard";
+            } 
+
+            if(swipedLeftCard === index){
+                className = "lastCardSwip"
             }
-            return <Card content = {`${index} - ${content}`} key= {index} className={className}/>
+            return <Card handleCloseClick = {handleCloseClick} content = {`${index} - ${content}`} key= {index} className={className} isSelected = {index === selectedCardNo}/>
         } )
     }
 
     const handleMouseEnter = (event : any) => {
         const {dataset} = event.target;
-        const {side} = dataset;
-        setSide(() => side);
+        const {side : datasetID} = dataset;
+        // setClosedCardNo(-1);
+        if(side !== datasetID){
+            setSide(() => datasetID);
+        }
     }
 
     const handleMouseLeave = () => {
         setSide(() => "none");
+    }
+
+    const handleSetSelectedCardNo =() => {
+        setSelectedCardNo(selectedIndex)
+    }
+
+    const handleCloseClick = () => {
+        setClosedCardNo(selectedCardNo);
+        setSelectedCardNo(-1)
     }
 
     return <CardContext.Provider value={{selectedCard, setSelectedCard}}>
@@ -111,12 +137,14 @@ const Cards = () => {
             <div className="nextCard" 
                 onClick = {handleSetSelectedCard} 
                 onMouseEnter={handleMouseEnter}
+                onMouseOver={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 data-side = "left"
             >
                 Next Card
             </div>
             <div className="showme" 
+                onClick = {handleSetSelectedCardNo} 
                 onMouseEnter={handleMouseEnter} 
                 onMouseLeave={handleMouseLeave}
                 data-side = "right"

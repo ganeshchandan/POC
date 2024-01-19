@@ -107,7 +107,7 @@ const Canvas = ({
 
         if( count <= halfWidth){
             clearTimeout(timerRef.current);
-            const timer = setTimeout(() => oneSideCanvas(side,width,halfWidth,height, count+1), 10);
+            const timer = setTimeout(() => oneSideCanvas(side,width,halfWidth,height, count+1), 0);
             timerRef.current = timer;
         }
    }
