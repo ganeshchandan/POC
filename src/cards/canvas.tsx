@@ -146,8 +146,7 @@ const Canvas = ({
             }else{
                 ctx.reset();
             }
-        }
-   
+        } 
     }
    
     return <canvas 

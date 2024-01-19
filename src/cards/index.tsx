@@ -63,14 +63,7 @@ const Cards = () => {
     const [side, setSide] = useState<TSide>("none")
     const {selectedIndex, color} = selectedCard;
     const [selectedCardNo , setSelectedCardNo] = useState(-1);
-    const [closedCardNo , setClosedCardNo] = useState(-1);
     const {color : nextColor =  "#0073e6" } = contents[(selectedIndex + 1) % contents.length];
-
-    
-
-    // useEffect(() => {
-    //     setTimeout(() => setSelectedCardNo((state) => 0), 10000)
-    // }, [])
 
     const handleSetSelectedCard = () => {
         setSide("both");
@@ -92,9 +85,13 @@ const Cards = () => {
             let className = "";
             if(index === selectedCardNo){
                 className = " selectedCard"
-            }else if (closedCardNo === index){
-                className = "deselectedCard";
-            } else if(selectedIndex === index){
+            } 
+            
+            // else if (closedCardNo === index){
+            //     className = "deselectedCard";
+            // } 
+            
+            else if(selectedIndex === index){
                 className = `activeCard selectingCard_${side}`;
             } else if(secondIndex === index){
                 className = "secondCard";
@@ -110,7 +107,6 @@ const Cards = () => {
     const handleMouseEnter = (event : any) => {
         const {dataset} = event.target;
         const {side : datasetID} = dataset;
-        setClosedCardNo(-1);
         if(side !== datasetID){
             setSide(() => datasetID);
         }
@@ -125,7 +121,6 @@ const Cards = () => {
     }
 
     const handleCloseClick = () => {
-        setClosedCardNo(selectedCardNo);
         setSelectedCardNo(-1)
     }
 

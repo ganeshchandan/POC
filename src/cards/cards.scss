@@ -1,5 +1,5 @@
 *{
-    @keyframes slidein {
+    @keyframes slideSelected {
         0% {
             width: 300px;
             transform: matrix(1, .59, 0, 1, 150, 0);
@@ -18,18 +18,28 @@
         }
     }
 
-    @keyframes slideOut {
+    @keyframes slideDeselected {
         0% { 
             display: block;
             z-index: 0;
             width: 700px;
             transform: matrix(1, 0, 0, 1, 0, 200)
         }
+
+        // 25% {
+        //     transform: matrix(1, .29, 0, 1, 100, 140);
+        //     width: 550px;
+        // }
       
         50% {
             width: 300px;
-            transform: matrix(1, .59, 0, 1, 150, 0);
+            transform: matrix(1, .69, 0, 1, 150, 70);
         }
+
+        // 75%{
+        //     width: 300px;
+        //     transform: matrix(1, .29, 0, 1, 150, 0);
+        // }
 
         100%{
             transform: matrix(1, 0, 0, 1, 0, 0);
@@ -123,24 +133,6 @@
                 transition: transform .5s ease-in-out,background-color .5s ease-out;
                 -webkit-transition: background-color .5s ease-out,opacity .5s linear,-webkit-transform .5s ease-in-out;
 
-                &.selectedCard{
-                    display: block;
-                    z-index: 0;
-                    transition: slidein .2s ease-in-out;
-                    animation-fill-mode: forwards;
-                    animation-name: slidein;
-                    animation-duration: 1s;
-                    
-                }
-
-                &.deselectedCard{
-                    display: block;
-                    z-index: 0;
-                    animation-fill-mode: forwards;
-                    animation-name: slideOut;
-                    animation-duration: 1s;
-                }
-
                 &.selectingCard_left{
                     transform: matrix(1, -.59, 0, 1, -150, 0);
                 }
@@ -180,6 +172,28 @@
                     align-items: center;
                     justify-content: center;
                     font-size: 12px;
+                }
+
+                &.selectedCard{
+                    display: block;
+                    z-index: 0;
+                    transition: slideSelected 1s ease-in-out;
+                    animation-fill-mode: forwards;
+                    animation-name: slideSelected;
+                    animation-duration: 1s;
+
+                }
+
+                &.deselectedCard{
+                    display: block;
+                    z-index: 0;
+                    animation-fill-mode: forwards;
+                    animation-name: slideDeselected;
+                    animation-duration: 1.5s;
+                    animation-timing-function: ease-in;
+                    .closeIcon{
+                        display: none;
+                    }
                 }
             }
         }
