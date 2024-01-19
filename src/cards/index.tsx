@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, createContext, useState } from "react";
+import { Dispatch, SetStateAction, createContext, useRef, useState } from "react";
 import Card from "./card";
 import "./cards.scss";
 import Canvas from "./canvas";
@@ -53,13 +53,9 @@ const contents = [{
 ];
 
 const Cards = () => {
-
     const [selectedCard, setSelectedCard] = useState({selectedIndex : 0,
-        id : 1,
-        color : "#0073e6",
-        content : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-    });
-    const [swipedLeftCard, setSwipedLeftCard] = useState(-1)
+        ...contents[0]
+     });
     const [side, setSide] = useState<TSide>("none")
     const {selectedIndex, color} = selectedCard;
     const [selectedCardNo , setSelectedCardNo] = useState(-1);
@@ -67,7 +63,7 @@ const Cards = () => {
 
     const handleSetSelectedCard = () => {
         setSide("both");
-        setSwipedLeftCard(selectedIndex);
+    
         setSelectedCard(() => {
             const index = (selectedIndex + 1) % contents.length;
             return {
@@ -85,19 +81,13 @@ const Cards = () => {
             let className = "";
             if(index === selectedCardNo){
                 className = " selectedCard"
-            } 
-            
-            // else if (closedCardNo === index){
-            //     className = "deselectedCard";
-            // } 
-            
-            else if(selectedIndex === index){
+            } else if(selectedIndex === index){
                 className = `activeCard selectingCard_${side}`;
             } else if(secondIndex === index){
                 className = "secondCard";
             } else if(thirdIndex === index){
                 className = "thirdCard";
-            } else if(swipedLeftCard === index){
+            } else if(selectedIndex - 1 === index){
                 className = "lastCardSwip"
             }
             return <Card handleCloseClick = {handleCloseClick} content = {`${index} - ${content}`} key= {index} className={className} isSelected = {index === selectedCardNo}/>
@@ -125,7 +115,7 @@ const Cards = () => {
     }
 
     return <CardContext.Provider value={{selectedCard, setSelectedCard}}>
-        <div className="cards" >
+        <div className="cards">
         {
             renderCards()
         }
