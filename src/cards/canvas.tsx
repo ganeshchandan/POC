@@ -125,8 +125,8 @@ const Canvas = ({
         const ctx = canvasRef.current?.getContext("2d");
         const halfWidth = width /2;
         if(ctx){
-                let drawWidth = 5*count;
-                const arcWidth = (5*count * count / 100);
+                let drawWidth = 15*count;
+                const arcWidth = (15*count * count / 100);
                 const x1 = halfWidth+drawWidth;
                 const x4 = halfWidth - drawWidth;
 

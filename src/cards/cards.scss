@@ -192,7 +192,8 @@
 
                 &.lastCardSwip{
                     display: block;
-                    transform: matrix(1, .9, 0, 1, -1000 , 0)
+                    transform: matrix(1, .9, 0, 1, -1000 , 0);
+                    transition: transform 1s linear;
                     // matrix(1, .9, 0, 1, -1000, 0);
                     
                 }
