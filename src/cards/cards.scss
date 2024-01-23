@@ -112,6 +112,7 @@
             position: absolute;
             z-index: 1;
             width: 100%;
+            // perspective: 300px;
             .showMeAndNextCard{
                 width: 100%;
                 height: 100%;
@@ -181,13 +182,13 @@
                 transition: transform .5s ease-in-out,background-color .5s ease-out;
                 transition: transform .5s ease-in-out,background-color .5s ease-out;
                 -webkit-transition: background-color .5s ease-out,opacity .5s linear,-webkit-transform .5s ease-in-out;
+           
 
                 &.selectingCard_left{
-                    // transform: perspective(7cm) rotateX(0deg) rotateY(336deg) translateX(300px)
-                    transform: matrix(1, -.59, 0, 1, -150, 0);
+                    transform: perspective(300px) rotate3d(0, 1, 0, -21deg) translateX(-270px) scale(1.25);
                 }
                 &.selectingCard_right{
-                    transform: matrix(1, .59, 0, 1, 150, 0);
+                    transform: perspective(300px) rotate3d(0, 1, 0, 21deg) translateX(270px) scale(1.25);
                 }
 
                 &.lastCardSwip{
