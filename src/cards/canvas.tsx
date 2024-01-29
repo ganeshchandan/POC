@@ -64,7 +64,7 @@ const Canvas = ({
     useEffect(() => {
         timerRef.current && clearTimeout(timerRef.current)
         const width = window.innerWidth;
-        let halfWidth = width /4 ;
+        let halfWidth = width / 2 ;
         const height = window.innerHeight ;
         const ctx = canvasRef.current?.getContext("2d");
         
@@ -75,29 +75,32 @@ const Canvas = ({
         if(side === "both"){
             bothSideCanvas(width,height,0, nextColor);
         }else if(side !== "none"){
-            oneSideCanvas(side, width /2 , Math.ceil(halfWidth / 5) , height, 0, nextColor);
+            oneSideCanvas(side, halfWidth , halfWidth/2 , height, 0, nextColor);
         }
 
     },[side]);
 
     const oneSideCanvas = (side : TSide,
         width : number, 
-        halfWidth : number , 
+        halfWidth : number, 
         height : number,
         count : number,
         nextColor : string) => {
         const ctx = canvasRef.current?.getContext("2d");
         if(ctx){
-            let curveWidth = 5*count;
-    
-            let x3 = curveWidth;
-            const curvePosition = (5*count * count / 100)
+            let curveWidth = count;
+            let x3 = count;
+            let stopDraw = false;
+            const curvePosition = (count * count / 100);
+
             if(side === "left"){
                 curveWidth = width - curveWidth;
                 x3 = curveWidth - curvePosition;
+                stopDraw = x3 <= halfWidth;
             }else{
                 curveWidth = width + curveWidth;
                 x3 = curveWidth + curvePosition;
+                stopDraw = x3 >= width + halfWidth;
             }
     
             arcDraw(ctx, 
@@ -108,14 +111,13 @@ const Canvas = ({
                 [width, height],
                 nextColor
             );
-        }
-        
-
-        if( count <= halfWidth){
-            clearTimeout(timerRef.current);
-            const timer = setTimeout(() => oneSideCanvas(side,width,halfWidth,height, count+1, nextColor), 0);
-            timerRef.current = timer;
-        }
+            
+            if(!stopDraw){
+                clearTimeout(timerRef.current);
+                const timer = setTimeout(() => oneSideCanvas(side,width,halfWidth,height, count+1, nextColor), 0);
+                timerRef.current = timer;
+            }
+        }    
    }
 
    const bothSideCanvas = (width : number, 
@@ -125,8 +127,8 @@ const Canvas = ({
         const ctx = canvasRef.current?.getContext("2d");
         const halfWidth = width /2;
         if(ctx){
-                let drawWidth = 15*count;
-                const arcWidth = (15*count * count / 100);
+                let drawWidth = 5*count;
+                const arcWidth = (5*count * count / 100);
                 const x1 = halfWidth+drawWidth;
                 const x4 = halfWidth - drawWidth;
 

@@ -90,7 +90,10 @@ const Cards = () => {
             } else if(selectedIndex - 1 === index){
                 className = "lastCardSwip"
             }
-            return <Card handleCloseClick = {handleCloseClick} content = {`${index} - ${content}`} key= {index} className={className} isSelected = {index === selectedCardNo}/>
+            return <Card handleCloseClick = {handleCloseClick} 
+            content = {`${index} - ${content}`} 
+            key= {index} className={className} 
+            isSelected = {index === selectedCardNo}/>
         } )
     }
 
