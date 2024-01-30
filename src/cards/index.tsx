@@ -3,6 +3,40 @@ import Card from "./card";
 import "./cards.scss";
 import Canvas from "./canvas";
 
+const getClassName = (index : number,
+    selectedCardNo : number,
+    side : string ,
+    selectedIndex : number, 
+    secondIndex : number,
+    thirdIndex : number) => {
+    let className = "";
+            if(index === selectedCardNo){
+                className = " selectedCard"
+            } else if(selectedIndex === index){
+                className = `activeCard selectingCard_${side}`;
+            } else if(secondIndex === index){
+                className = "secondCard";
+            } else if(thirdIndex === index){
+                className = "thirdCard";
+            } else if(selectedIndex - 1 === index){
+                className = "lastCardSwip"
+            }
+            return className;
+}
+
+const getClassNameContent = (
+    selectedCardNo : number,
+    side : string ,
+   ) => {
+    let className = "";
+            if(selectedCardNo !== -1){
+                className = " selectedCard"
+            } else if(side !== "none"){
+                className = `activeCard selectingCard_${side}`;
+            } 
+            return className;
+}
+
 const CardContext = createContext<{selectedCard? : {
     selectedIndex : number;
     id : number;
@@ -59,7 +93,7 @@ const Cards = () => {
     const [side, setSide] = useState<TSide>("none")
     const {selectedIndex, color} = selectedCard;
     const [selectedCardNo , setSelectedCardNo] = useState(-1);
-    const {color : nextColor =  "#0073e6" } = contents[(selectedIndex + 1) % contents.length];
+    const {color : nextColor =  "#0073e6" , content } = contents[(selectedIndex + 1) % contents.length];
 
     const handleSetSelectedCard = () => {
         setSide("both");
@@ -78,22 +112,26 @@ const Cards = () => {
         const secondIndex =  (selectedIndex + 1) % length;
         const thirdIndex =  (selectedIndex + 2) % length;
         return contents.map(({content}, index) => {
-            let className = "";
-            if(index === selectedCardNo){
-                className = " selectedCard"
-            } else if(selectedIndex === index){
-                className = `activeCard selectingCard_${side}`;
-            } else if(secondIndex === index){
-                className = "secondCard";
-            } else if(thirdIndex === index){
-                className = "thirdCard";
-            } else if(selectedIndex - 1 === index){
-                className = "lastCardSwip"
-            }
+            let className = getClassName(index,
+                selectedCardNo,
+                side,
+                selectedIndex, 
+                secondIndex,
+                thirdIndex);
+            // if(index === selectedCardNo){
+            //     className = " selectedCard"
+            // } else if(selectedIndex === index){
+            //     className = `activeCard selectingCard_${side}`;
+            // } else if(secondIndex === index){
+            //     className = "secondCard";
+            // } else if(thirdIndex === index){
+            //     className = "thirdCard";
+            // } else if(selectedIndex - 1 === index){
+            //     className = "lastCardSwip"
+            // }
             return <Card handleCloseClick = {handleCloseClick} 
             content = {`${index} - ${content}`} 
-            key= {index} className={className} 
-            isSelected = {index === selectedCardNo}/>
+            key= {index} className={className} isSelected = {index === selectedCardNo}/>
         } )
     }
 
@@ -119,9 +157,9 @@ const Cards = () => {
 
     return <CardContext.Provider value={{selectedCard, setSelectedCard}}>
         <div className="cards">
-        {
+        {/* {
             renderCards()
-        }
+        } */}
         <div className={`showMeAndNextCard ${selectedCardNo !== -1 ? 'cardSelected' : ''}`}>
             <div className="nextCard" 
                 onClick = {handleSetSelectedCard} 
@@ -142,7 +180,17 @@ const Cards = () => {
             </div>
         </div>
     </div>
+    
     <Canvas side= {side} backgroundColor = {color} nextColor= {nextColor}/>
+    <div className="selectedCardContent">
+        <Card handleCloseClick = {handleCloseClick} 
+            content = {`asdad ${content}`} 
+            isSelected = {!selectedCardNo}
+            className={getClassNameContent(selectedCardNo, side)}/>
+        <div className={`selectedCardDetails ${getClassNameContent(selectedCardNo, side)}`}>
+            {content}
+        </div>   
+    </div>
     </CardContext.Provider>
 }
 

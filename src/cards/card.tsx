@@ -9,7 +9,7 @@ const  debounce = (func :  () => void, timeout = 1000) =>{
   }
 
 const Card = ({content, className, isSelected, handleCloseClick} : 
-    {content:string; className : string; isSelected : boolean; handleCloseClick : () => void}) => {
+    {content:string; className? : string; isSelected : boolean; handleCloseClick : () => void}) => {
 
     const cardRef = useRef<HTMLDivElement>(null);
     
@@ -28,13 +28,13 @@ const Card = ({content, className, isSelected, handleCloseClick} :
         }
     }
     
-    return <div className={`card ${className}`}  
-    onMouseEnter={handleMouseEnter} 
-    onMouseLeave={handleMouseLeave}
-    ref={cardRef}>
-        {isSelected && <div className="closeIcon" onClick={onHandleClick}> X </div>}
-        {content}
-    </div>
+    return  <div className={`card ${className}`}  
+                onMouseEnter={handleMouseEnter} 
+                onMouseLeave={handleMouseLeave}
+                ref={cardRef}>
+                    {isSelected && <div className="closeIcon" onClick={onHandleClick}> X </div>}
+                    {content}
+            </div>
 }
 
 export default Card;
