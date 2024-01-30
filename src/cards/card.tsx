@@ -21,18 +21,10 @@ const Card = ({content, className, isSelected, handleCloseClick} :
         event.preventDefault();
     }
 
-    const onHandleClick = () => {
-        if(cardRef.current){
-            cardRef.current.classList.add("deselectedCard");
-            debounce(handleCloseClick)();
-        }
-    }
-    
     return  <div className={`card ${className}`}  
                 onMouseEnter={handleMouseEnter} 
                 onMouseLeave={handleMouseLeave}
                 ref={cardRef}>
-                    {isSelected && <div className="closeIcon" onClick={onHandleClick}> X </div>}
                     {content}
             </div>
 }

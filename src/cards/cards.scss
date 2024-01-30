@@ -264,14 +264,14 @@
                 backface-visibility: hidden;
 
                 &.selectingCard_left{
-                    z-index : 0;
+                    // z-index : 0;
                     // transform: rotateY(90deg);
                     // transform: perspective(300px) rotateY(-21deg) translateX(-350px) scale(1.25);
                     display: none !important;
                 }
                 &.selectingCard_right{
                     display: none !important;
-                    z-index : 0;
+                    // z-index : 0;
                     // transform: perspective(300px) rotateY(21deg) translateX(350px) scale(1.25);
                 }
 
@@ -290,7 +290,6 @@
                     display: block;
                     transform: rotate(8deg);
                     z-index: 2;
-                    background: red;
                 }
                 &.thirdCard{
                     display: block;
@@ -332,3 +331,5 @@
         }
     }
 }
+
+@import "./card_animation.scss";

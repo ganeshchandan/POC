@@ -155,11 +155,16 @@ const Cards = () => {
         setSelectedCardNo(-1)
     }
 
+    const onHandleClick = () => {
+        setSelectedCardNo(-1);
+    }
+    
+
     return <CardContext.Provider value={{selectedCard, setSelectedCard}}>
         <div className="cards">
-        {/* {
+        {
             renderCards()
-        } */}
+        }
         <div className={`showMeAndNextCard ${selectedCardNo !== -1 ? 'cardSelected' : ''}`}>
             <div className="nextCard" 
                 onClick = {handleSetSelectedCard} 
@@ -182,7 +187,7 @@ const Cards = () => {
     </div>
     
     <Canvas side= {side} backgroundColor = {color} nextColor= {nextColor}/>
-    <div className="selectedCardContent">
+    {/* <div className="selectedCardContent">
         <Card handleCloseClick = {handleCloseClick} 
             content = {`asdad ${content}`} 
             isSelected = {!selectedCardNo}
@@ -190,6 +195,15 @@ const Cards = () => {
         <div className={`selectedCardDetails ${getClassNameContent(selectedCardNo, side)}`}>
             {content}
         </div>   
+    </div> */}
+
+    <div className={`flipCardContainer ${getClassNameContent(selectedCardNo, side)}` } onClick={onHandleClick}>
+        <div className={`flipCard`}>
+            <div className="front-face">{selectedIndex} - {content}
+            </div>
+            <div className="back-face">
+                Back face : {selectedIndex} - {content}</div>
+        </div>
     </div>
     </CardContext.Provider>
 }

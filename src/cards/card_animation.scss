@@ -1,0 +1,106 @@
+*{
+    @keyframes slideSelectedContent {
+        0% {
+            width: 300px;
+            transform: perspective(500px) translate3d(150px,0,0) rotateY(.75turn);
+        }
+      
+        25% {
+            width: 300px;
+            transform: perspective(300px) translate3d(300px,0,0) rotateY(.65turn);
+        }
+
+        50%{
+            color: transparent;
+            width: 40%;
+            height: 40%;
+        }
+
+        99%{
+            color: transparent;
+        }
+
+        100%{
+            width: 90%;
+            height: 80%;
+            top: calc(100% - 80%);
+            visibility: visible;
+            transform: translate3d(0px,0,0) rotateY(.5turn);
+        }
+    }
+    
+    
+    .flipCardContainer{
+        position: relative;
+        height: 100%;
+        width: 100%;
+        &.selectedCard{
+            z-index: 1;
+            .flipCard{
+                animation-fill-mode: forwards;
+                animation-name: slideSelectedContent;
+                animation-duration: 2s;
+                animation-timing-function: linear;
+            }
+        }
+        &.selectingCard_left{
+            .flipCard{
+                z-index: 1;
+                transform: perspective(300px) rotateY(-21deg) translateX(-350px) scale(1.25);
+            }
+        }
+        &.selectingCard_right{
+            .flipCard{
+                z-index: 1;
+                transform: perspective(300px) rotateY(21deg) translateX(350px) scale(1.25);
+            }
+        }
+        .flipCard{
+            display: block;
+            height: 300px;
+            width: 200px;
+            border-radius: 10px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            border: 2px solid #fAFAFA;
+            transition: all 1s ease-in-out;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            background-color: #fff;
+            box-sizing: border-box;
+            .closeIcon{
+                width: 20px;
+                height: 20px;
+                float: right;
+                border: 2px solid #999;
+                border-radius: 50%;
+                color: #999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                transform: rotateY(.5turn);
+                z-index: 1;
+                position: absolute;
+            }
+
+            .front-face , .back-face{
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                backface-visibility: hidden;
+                background: #fff;
+                border-radius: inherit;
+            }
+            .back-face{
+                transform: rotateY(.5turn);
+                padding: 10px;
+                box-sizing: border-box;
+            }
+        }
+    }
+}
