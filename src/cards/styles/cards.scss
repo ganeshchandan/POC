@@ -167,11 +167,13 @@
 
                 &.selectingCard_left {
                     display: block !important;
-                    transform: perspective(300px) rotateY(-21deg) translateX(-350px) translateZ(50px) scale(1.25);
+                    transform: perspective(300px) rotateY(-21deg) translateX(var(--selecting-card-position))
+                        translateZ(50px) scale(1.25);
                 }
                 &.selectingCard_right {
                     display: block !important;
-                    transform: perspective(300px) rotateY(21deg) translateX(350px) translateZ(50px) scale(1.25);
+                    transform: perspective(300px) rotateY(21deg) translateX(var(--selecting-card-position))
+                        translateZ(50px) scale(1.25);
                 }
 
                 &.lastCardSwip {

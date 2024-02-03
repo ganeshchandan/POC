@@ -100,7 +100,7 @@ const contents = [
 ];
 
 const Cards = () => {
-  const [translateX, setTranslateX] = useState("-1200px");
+  // const [translateX, setTranslateX] = useState("-1200px");
   const contentRef = useRef<HTMLDivElement>(null);
   const [selectedCard, setSelectedCard] = useState({
     selectedIndex: 0,
@@ -112,9 +112,10 @@ const Cards = () => {
   const { color: nextColor = "#0073e6", content } =
     contents[(selectedIndex + 1) % contents.length];
   const [arcWidth, setArcWidth] = useState(0);
+  const [cssVaribales, setCssVaribales] = useState({});
 
   useEffect(() => {
-    setTranslateX(`-${window.innerWidth / 2 + 100}px`);
+    setCssVaribales({ "--translate-x": `-${window.innerWidth / 2 + 100}px` });
   }, []);
 
   const handleSetSelectedCard = () => {
@@ -172,6 +173,22 @@ const Cards = () => {
     if (side !== datasetID) {
       setSide(() => datasetID);
     }
+    if (navigator.userAgent.toLowerCase().includes("mobi")) {
+      setCssVaribales((cssVaribales) => ({
+        ...cssVaribales,
+        [`--selecting-card-position`]: `${
+          datasetID === "left" ? "-" : ""
+        }150px`,
+      }));
+    } else {
+      setCssVaribales((cssVaribales) => ({
+        ...cssVaribales,
+        [`--selecting-card-position`]: `${
+          datasetID === "left" ? "-" : ""
+        }350px`,
+      }));
+    }
+
     setArcWidth(getArcWidthForSide(event, datasetID));
   };
 
@@ -211,13 +228,7 @@ const Cards = () => {
 
   return (
     <CardContext.Provider value={{ selectedCard, setSelectedCard }}>
-      <div
-        className="cards"
-        style={{
-          //@ts-ignore
-          "--translate-x": translateX,
-        }}
-      >
+      <div className="cards" style={cssVaribales}>
         {renderCards()}
       </div>
 
@@ -229,9 +240,11 @@ const Cards = () => {
         <div
           className="nextCard"
           onClick={handleSetSelectedCard}
+          onTouchStart={handleMouseEnter}
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
+          onTouchEnd={handleMouseLeave}
           data-side="left"
         >
           Next Card
@@ -239,9 +252,11 @@ const Cards = () => {
         <div
           className="showme"
           onClick={handleSetSelectedCardNo}
+          onTouchStart={handleMouseEnter}
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
+          onTouchEnd={handleMouseLeave}
           data-side="right"
         >
           Show me!

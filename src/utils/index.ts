@@ -20,3 +20,10 @@ const sideAndCalculationMapper: {
   right: rightSideCalcuation,
   left: leftSideCalcuation,
 };
+
+export const formatCssVaribales = (varibales: { [key: string]: string }) => {
+  return Object.entries(varibales).reduce(
+    (result, [key, value]) => ({ ...result, [`--${key}`]: value }),
+    {}
+  );
+};
