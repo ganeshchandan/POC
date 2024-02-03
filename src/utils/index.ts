@@ -1,6 +1,22 @@
 export const getArcWidthForSide = (event: MouseEvent, side: string) => {
   const windowWidth = window.innerWidth;
   const mousePosition = event.pageX;
-  //   debugger;
-  return side === "right" ? mousePosition - windowWidth / 2 : mousePosition;
+  return sideAndCalculationMapper[side](mousePosition, windowWidth);
+};
+
+const rightSideCalcuation = (mousePosition: number, windowWidth: number) => {
+  const width = mousePosition - windowWidth / 2;
+  return Math.min(width, 350);
+};
+
+const leftSideCalcuation = (mousePosition: number, windowWidth: number) => {
+  const width = windowWidth / 2 - mousePosition;
+  return Math.min(width, 350);
+};
+
+const sideAndCalculationMapper: {
+  [key: string]: (mousePosition: number, windowWidth: number) => number;
+} = {
+  right: rightSideCalcuation,
+  left: leftSideCalcuation,
 };
