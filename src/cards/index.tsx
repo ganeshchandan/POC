@@ -4,12 +4,12 @@ import {
   createContext,
   useRef,
   useState,
+  useEffect,
 } from "react";
 import Card from "./card";
 import "./styles/index.scss";
-// import "./responsive.scss";
 import Canvas from "./canvas";
-import ContentBox from "./content_box";
+import { getArcWidthForSide } from "../utils";
 
 const getClassName = (
   index: number,
@@ -100,6 +100,7 @@ const contents = [
 ];
 
 const Cards = () => {
+  const [translateX, setTranslateX] = useState("-1200px");
   const contentRef = useRef<HTMLDivElement>(null);
   const [selectedCard, setSelectedCard] = useState({
     selectedIndex: 0,
@@ -110,6 +111,11 @@ const Cards = () => {
   const [selectedCardNo, setSelectedCardNo] = useState(-1);
   const { color: nextColor = "#0073e6", content } =
     contents[(selectedIndex + 1) % contents.length];
+  const [arcWidth, setArcWidth] = useState(0);
+
+  useEffect(() => {
+    setTranslateX(`-${window.innerWidth / 2 + 100}px`);
+  }, []);
 
   const handleSetSelectedCard = () => {
     setSide("both");
@@ -162,9 +168,12 @@ const Cards = () => {
   const handleMouseEnter = (event: any) => {
     const { dataset } = event.target;
     const { side: datasetID } = dataset;
+
     if (side !== datasetID) {
       setSide(() => datasetID);
     }
+    console.log(getArcWidthForSide(event, datasetID), window.innerWidth);
+    setArcWidth(getArcWidthForSide(event, datasetID));
   };
 
   const handleMouseLeave = () => {
@@ -203,7 +212,15 @@ const Cards = () => {
 
   return (
     <CardContext.Provider value={{ selectedCard, setSelectedCard }}>
-      <div className="cards">{renderCards()}</div>
+      <div
+        className="cards"
+        style={{
+          //@ts-ignore
+          "--translate-x": translateX,
+        }}
+      >
+        {renderCards()}
+      </div>
 
       <div
         className={`showMeAndNextCard ${
@@ -214,7 +231,7 @@ const Cards = () => {
           className="nextCard"
           onClick={handleSetSelectedCard}
           onMouseEnter={handleMouseEnter}
-          onMouseOver={handleMouseEnter}
+          onMouseMove={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           data-side="left"
         >
@@ -224,6 +241,7 @@ const Cards = () => {
           className="showme"
           onClick={handleSetSelectedCardNo}
           onMouseEnter={handleMouseEnter}
+          onMouseMove={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           data-side="right"
         >
@@ -231,7 +249,12 @@ const Cards = () => {
         </div>
       </div>
 
-      <Canvas side={side} backgroundColor={color} nextColor={nextColor} />
+      <Canvas
+        side={side}
+        backgroundColor={color}
+        nextColor={nextColor}
+        arcWidth={arcWidth}
+      />
 
       <div
         ref={contentRef}
@@ -245,7 +268,6 @@ const Cards = () => {
           </div>
         </div>
       </div>
-      {/* <ContentBox /> */}
     </CardContext.Provider>
   );
 };

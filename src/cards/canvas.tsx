@@ -49,9 +49,10 @@ interface ICanvas {
   side: TSide;
   backgroundColor: string;
   nextColor: string;
+  arcWidth: number;
 }
 
-const Canvas = ({ side, backgroundColor, nextColor }: ICanvas) => {
+const Canvas = ({ side, backgroundColor, nextColor, arcWidth }: ICanvas) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const timerRef = useRef<NodeJS.Timeout>();
 
@@ -59,6 +60,7 @@ const Canvas = ({ side, backgroundColor, nextColor }: ICanvas) => {
     timerRef.current && clearTimeout(timerRef.current);
     const width = window.innerWidth;
     let halfWidth = width / 2;
+    const quterWidth = halfWidth / 2;
     const height = window.innerHeight;
     const ctx = canvasRef.current?.getContext("2d");
 
@@ -72,8 +74,9 @@ const Canvas = ({ side, backgroundColor, nextColor }: ICanvas) => {
       bothSideReverseCanvas(
         halfWidth,
         height,
-        halfWidth / 2,
-        "rgba(0, 0, 0, 0.3)"
+        quterWidth,
+        "rgba(0, 0, 0, 0.3)",
+        (halfWidth * 0.55) / 100
       );
     } else if (side !== "none") {
       oneSideCanvas(side, halfWidth, halfWidth / 2, height, 0, nextColor);
@@ -169,10 +172,10 @@ const Canvas = ({ side, backgroundColor, nextColor }: ICanvas) => {
     halfWidth: number,
     y3: number,
     quterWidth: number,
-    nextColor: string
+    nextColor: string,
+    singlePostion: number
   ) => {
     const ctx = canvasRef.current?.getContext("2d");
-    console.log(quterWidth);
     if (ctx) {
       ctx.clearRect(0, 0, 3000, 3000);
       if (quterWidth <= 0) {
@@ -199,7 +202,14 @@ const Canvas = ({ side, backgroundColor, nextColor }: ICanvas) => {
 
       clearTimeout(timerRef.current);
       const timer = setTimeout(
-        () => bothSideReverseCanvas(halfWidth, y3, quterWidth - 5, nextColor),
+        () =>
+          bothSideReverseCanvas(
+            halfWidth,
+            y3,
+            quterWidth - singlePostion,
+            nextColor,
+            singlePostion
+          ),
         0
       );
       timerRef.current = timer;
