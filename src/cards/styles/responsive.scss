@@ -1,0 +1,19 @@
+* {
+    @media only screen and (max-width: 1100px) {
+        .showMeAndNextCard {
+            > .nextCard,
+            .showme {
+                padding-bottom: 30% !important;
+                align-items: end !important;
+            }
+            .nextCard {
+                justify-content: flex-end;
+                padding-right: 10%;
+            }
+            .showme {
+                justify-content: flex-start;
+                padding-left: 10%;
+            }
+        }
+    }
+}

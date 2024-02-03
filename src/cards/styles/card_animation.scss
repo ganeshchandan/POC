@@ -1,0 +1,164 @@
+* {
+    @keyframes slideDeSelectedContent {
+        0% {
+            width: 70%;
+            height: 80%;
+            color: transparent;
+            top: 0;
+            transform: rotateY(0.5turn) translateZ(50px);
+        }
+
+        // 25% {
+        //     width: 300px;
+        //     transform: rotateY(0.65turn);
+        // }
+
+        50% {
+            color: transparent;
+            transform: rotateY(0.25turn) translateZ(30px);
+        }
+
+        75% {
+            // color: transparent;
+            width: 200px;
+            height: 300px;
+            transform: rotateY(0.15turn) translateZ(20px);
+        }
+
+        // 99% {
+        //     color: transparent;
+        //     transform: perspective(300px) translate3d(300px, 0, 0) rotateY(0.51turn);
+        // }
+
+        100% {
+            // color: transparent;
+            width: 200px;
+            height: 300px;
+            z-index: -1;
+            top: 0;
+            transform: rotateY(0turn) translateZ(50px);
+        }
+    }
+    @keyframes slideSelectedContent {
+        0% {
+            color: transparent;
+            // visibility: hidden;
+            transform: perspective(600px) translate3d(300px, 0, 0) rotateY(0.75turn);
+            perspective-origin: right bottom;
+        }
+
+        // 50% {
+        //     color: transparent;
+        //     visibility: visible;
+        //     transform: rotateY(0.85turn);
+        //     // perspective-origin: right bottom;
+        // }
+
+        // 75% {
+        //     visibility: visible;
+        //     width: 40%;
+        //     height: 40%;
+        // }
+
+        99% {
+            visibility: visible;
+            color: transparent;
+        }
+
+        100% {
+            perspective-origin: right bottom;
+            width: 70%;
+            height: 80%;
+            top: calc(100% - 80%);
+            visibility: visible;
+            transform: translate3d(0px, 0, 0) rotateY(0turn);
+        }
+    }
+
+    .flipCardContainer {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        z-index: -1;
+        &.selectedCard {
+            z-index: 10;
+            .flipCard {
+                animation-fill-mode: forwards;
+                animation-name: slideSelectedContent;
+                animation-duration: 1s;
+                animation-timing-function: linear;
+            }
+        }
+
+        &.deSelectedCard {
+            z-index: 10;
+            .flipCard {
+                animation-fill-mode: forwards;
+                animation-name: slideDeSelectedContent;
+                animation-duration: 1s;
+                animation-timing-function: linear;
+            }
+        }
+        // &.selectingCard_left {
+        //     .flipCard {
+        //         z-index: 1;
+        //         transform: perspective(300px) rotateY(-21deg) translateX(-350px) scale(1.25);
+        //     }
+        // }
+        // &.selectingCard_right {
+        //     .flipCard {
+        //         z-index: 1;
+        //         transform: perspective(300px) rotateY(21deg) translateX(350px) scale(1.25);
+        //     }
+        // }
+        .flipCard {
+            display: block;
+            height: 300px;
+            width: 200px;
+            border-radius: 10px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            // border: 2px solid #fafafa;
+            transition: all 1s ease-in-out;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            background-color: #fff;
+            box-sizing: border-box;
+            box-shadow: #999;
+            .closeIcon {
+                width: 20px;
+                height: 20px;
+                float: right;
+                border: 2px solid #999;
+                border-radius: 50%;
+                color: #999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                transform: rotateY(0.5turn);
+                z-index: 1;
+                position: absolute;
+            }
+
+            .front-face,
+            .back-face {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                backface-visibility: hidden;
+                background: #fff;
+                border-radius: inherit;
+            }
+            .back-face {
+                transform: rotateY(0.5turn);
+                padding: 10px;
+                box-sizing: border-box;
+            }
+        }
+    }
+}

@@ -1,0 +1,118 @@
+* {
+    @keyframes slideSelectedContent {
+        0% {
+            width: 300px;
+            transform: perspective(500px) translate3d(150px, 0, 0) rotateY(0.75turn);
+        }
+
+        25% {
+            // width: 300px;
+            transform: perspective(300px) translate3d(300px, 0, 0) rotateY(0.65turn);
+        }
+
+        50% {
+            color: transparent;
+            // width: 40%;
+            // height: 40%;
+            transform: perspective(300px) translate3d(300px, 0, 0) rotateY(0.57turn);
+        }
+
+        99% {
+            color: transparent;
+            transform: perspective(300px) translate3d(300px, 0, 0) rotateY(0.51turn);
+        }
+
+        100% {
+            // width: 70%;
+            // height: 80%;
+            top: calc(100% - 80%);
+            visibility: visible;
+            transform: translate3d(0px, 0, 0) rotateY(0.5turn);
+        }
+    }
+
+    .box {
+        --box-width: 300px;
+        --box-height: 200px;
+        --box-depth: 6px;
+
+        margin: 100px;
+
+        width: var(--box-width);
+        height: var(--box-height);
+        position: relative;
+        transform: translateZ(-3px);
+        transform-style: preserve-3d;
+        transition: transform 1s;
+
+        animation-fill-mode: forwards;
+        animation-name: slideSelectedContent;
+        animation-duration: 2s;
+        animation-timing-function: linear;
+        animation-play-state: running;
+
+        > div {
+            position: absolute;
+            backface-visibility: hidden;
+            box-sizing: border-box;
+            background: #fafafa;
+            border: 1px solid #ccc;
+        }
+        .front-face,
+        .back-face {
+            background: #fff;
+            width: inherit;
+            height: inherit;
+            // background-color: red;
+            // border: 1px solid red;
+            border: 1px solid #ccc;
+            // line-height: 200px;
+            padding: 10px;
+            box-sizing: ;
+        }
+        .front-face {
+            transform: rotateY(0deg) translateZ(calc(var(--box-depth) / 2));
+        }
+        .back-face {
+            transform: rotateY(180deg) translateZ(calc(var(--box-depth) / 2));
+            // background-color: green;
+        }
+        .left-face,
+        .right-face {
+            height: inherit;
+            width: var(--box-depth);
+            left: calc(var(--box-width) / 2);
+            line-height: var(--box-height);
+        }
+        .left-face {
+            // background-color: peru;
+            transform: rotateY(90deg) translateZ(147px);
+        }
+        .right-face {
+            // background-color: aqua;
+            transform: rotateY(-90deg) translateZ(147px);
+        }
+        .top-face,
+        .bottom-face {
+            height: var(--box-depth);
+            width: inherit;
+            // background-color: beige;
+            top: calc(var(--box-height) / 2);
+            line-height: var(--box-height);
+        }
+        .top-face {
+            transform: rotateX(90deg) translateZ(103px);
+        }
+        .bottom-face {
+            // background-color: blueviolet;
+            transform: rotateX(-90deg) translateZ(97px);
+        }
+    }
+}
+
+// <div className="front-face">Fornt Face</div>
+// <div className="back-face">Back face</div>
+// <div className="left-face">Left Face</div>
+// <div className="right-face">Right face</div>
+// <div className="bottom-face">bottom Face</div>
+// <div className="top-face">top face</div>
