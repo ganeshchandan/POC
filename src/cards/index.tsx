@@ -196,6 +196,14 @@ const Cards = () => {
     setSide(() => "none");
   };
 
+  const handleTouchEnd = () => {
+    if (side === "left") {
+      handleSetSelectedCard();
+    } else {
+      handleSetSelectedCardNo();
+    }
+  };
+
   const handleSetSelectedCardNo = () => {
     setSelectedCardNo(selectedIndex);
     if (contentRef.current) {
@@ -244,7 +252,7 @@ const Cards = () => {
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          onTouchEnd={handleMouseLeave}
+          onTouchEnd={handleTouchEnd}
           data-side="left"
         >
           Next Card
@@ -256,7 +264,7 @@ const Cards = () => {
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          onTouchEnd={handleMouseLeave}
+          onTouchEnd={handleTouchEnd}
           data-side="right"
         >
           Show me!
