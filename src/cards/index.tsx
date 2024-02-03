@@ -172,7 +172,6 @@ const Cards = () => {
     if (side !== datasetID) {
       setSide(() => datasetID);
     }
-    console.log(getArcWidthForSide(event, datasetID), window.innerWidth);
     setArcWidth(getArcWidthForSide(event, datasetID));
   };
 

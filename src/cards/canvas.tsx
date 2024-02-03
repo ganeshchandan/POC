@@ -79,42 +79,44 @@ const Canvas = ({ side, backgroundColor, nextColor, arcWidth }: ICanvas) => {
         (halfWidth * 0.55) / 100
       );
     } else if (side !== "none") {
-      oneSideCanvas(side, halfWidth, halfWidth / 2, height, 0, nextColor);
+      oneSideCanvas(side, halfWidth, 350, 0, height, nextColor);
     }
   }, [side]);
 
   const oneSideCanvas = (
     side: TSide,
     width: number,
-    halfWidth: number,
+    arcWidth: number,
+    curveWidth: number,
     height: number,
-    count: number,
     nextColor: string
   ) => {
     const ctx = canvasRef.current?.getContext("2d");
     if (ctx) {
-      let curveWidth = count;
-      let x3 = count;
+      let x3 = 0;
+      let x2 = 0;
       let stopDraw = false;
-      const curvePosition = (count * count) / 100;
+      const curvePosition = curveWidth * 0.7;
       ctx.clearRect(0, 0, 3000, 3000);
       if (side === "left") {
-        curveWidth = width - curveWidth;
-        x3 = curveWidth - curvePosition;
-        stopDraw = x3 <= halfWidth;
+        debugger;
+        x2 = width - curveWidth;
+        x3 = x2 - curvePosition;
+        stopDraw = x3 <= width - arcWidth;
       } else {
-        curveWidth = width + curveWidth;
-        x3 = curveWidth + curvePosition;
-        stopDraw = x3 >= width + halfWidth;
+        x2 = width + curveWidth;
+        x3 = x2 + curvePosition;
+        stopDraw = x3 >= width + arcWidth;
         nextColor = "rgba(0, 0, 0, 0.3)";
       }
+      console.log(arcWidth, x3 - width);
 
       arcDraw(
         ctx,
         [width, 0],
-        [curveWidth, 0],
+        [x2, 0],
         [x3, height / 2],
-        [curveWidth, height],
+        [x2, height],
         [width, height],
         nextColor
       );
@@ -123,7 +125,14 @@ const Canvas = ({ side, backgroundColor, nextColor, arcWidth }: ICanvas) => {
         clearTimeout(timerRef.current);
         const timer = setTimeout(
           () =>
-            oneSideCanvas(side, width, halfWidth, height, count + 1, nextColor),
+            oneSideCanvas(
+              side,
+              width,
+              arcWidth,
+              curveWidth + 1,
+              height,
+              nextColor
+            ),
           0
         );
         timerRef.current = timer;
