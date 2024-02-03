@@ -1,20 +1,7 @@
 * {
-    @keyframes selectingCardLeft {
-        0% {
-            transform: perspective(300px) translateX(-150px) scale(1.25);
-        }
-
-        25% {
-            transform: perspective(300px) rotateY(-21deg) translateX(-250px) scale(1.25);
-        }
-
-        100% {
-            transform: perspective(300px) rotateY(-21deg) translateX(-350px) scale(1.25);
-        }
-    }
     @keyframes slideSwipeOut {
         0% {
-            transform: perspective(300px) rotateY(0.95turn) translateX(-350px) scale(1.25);
+            transform: perspective(300px) rotateY(0.95turn) translateX(var(--selecting-card-position)) scale(1.25);
         }
 
         100% {
