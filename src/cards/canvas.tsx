@@ -99,7 +99,6 @@ const Canvas = ({ side, backgroundColor, nextColor, arcWidth }: ICanvas) => {
       const curvePosition = curveWidth * 0.7;
       ctx.clearRect(0, 0, 3000, 3000);
       if (side === "left") {
-        debugger;
         x2 = width - curveWidth;
         x3 = x2 - curvePosition;
         stopDraw = x3 <= width - arcWidth;
@@ -109,7 +108,6 @@ const Canvas = ({ side, backgroundColor, nextColor, arcWidth }: ICanvas) => {
         stopDraw = x3 >= width + arcWidth;
         nextColor = "rgba(0, 0, 0, 0.3)";
       }
-      console.log(arcWidth, x3 - width);
 
       arcDraw(
         ctx,

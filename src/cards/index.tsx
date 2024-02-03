@@ -178,7 +178,7 @@ const Cards = () => {
         ...cssVaribales,
         [`--selecting-card-position`]: `${
           datasetID === "left" ? "-" : ""
-        }150px`,
+        }100px`,
       }));
     } else {
       setCssVaribales((cssVaribales) => ({
