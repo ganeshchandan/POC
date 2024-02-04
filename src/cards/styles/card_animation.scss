@@ -40,11 +40,16 @@
         }
     }
     @keyframes slideSelectedContent {
+        // 0% {
+        //     color: transparent;
+        //     display: none;
+        //     transform: perspective(600px) rotateY(0turn);
+        // }
         0% {
+            display: block;
             color: transparent;
             // visibility: hidden;
             transform: perspective(600px) translate3d(var(--selecting-card-position), 0, 0) rotateY(0.75turn);
-            perspective-origin: right bottom;
         }
 
         // 50% {
@@ -71,7 +76,7 @@
             height: 80%;
             top: calc(100% - 80%);
             visibility: visible;
-            transform: translate3d(0px, 0, 0) rotateY(0turn);
+            transform: translate3d(0px, 0, 0) rotateY(0.5turn);
         }
     }
 
@@ -86,7 +91,7 @@
                 animation-fill-mode: forwards;
                 animation-name: slideSelectedContent;
                 animation-duration: 1s;
-                animation-timing-function: linear;
+                animation-timing-function: ease-in-out;
             }
         }
 
@@ -105,12 +110,14 @@
         //         transform: perspective(300px) rotateY(-21deg) translateX(-350px) scale(1.25);
         //     }
         // }
-        // &.selectingCard_right {
-        //     .flipCard {
-        //         z-index: 1;
-        //         transform: perspective(300px) rotateY(21deg) translateX(350px) scale(1.25);
-        //     }
-        // }
+        &.selectingCard_right {
+            visibility: hidden;
+            .flipCard {
+                z-index: 1;
+                transform: perspective(300px) rotateY(21deg) translateX(var(--selecting-card-position)) translateZ(50px)
+                    scale(1.25);
+            }
+        }
         .flipCard {
             display: block;
             height: 300px;

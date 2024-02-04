@@ -79,7 +79,7 @@ const Canvas = ({ side, backgroundColor, nextColor, arcWidth }: ICanvas) => {
         (halfWidth * 0.55) / 100
       );
     } else if (side !== "none") {
-      oneSideCanvas(side, halfWidth, 350, 0, height, nextColor);
+      oneSideCanvas(side, halfWidth, arcWidth, 0, height, nextColor);
     }
   }, [side]);
 

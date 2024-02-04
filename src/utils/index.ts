@@ -27,3 +27,6 @@ export const formatCssVaribales = (varibales: { [key: string]: string }) => {
     {}
   );
 };
+
+export const isMobileDevice = () =>
+  navigator.userAgent.toLowerCase().includes("mobi");

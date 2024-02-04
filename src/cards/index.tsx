@@ -9,7 +9,7 @@ import {
 import Card from "./card";
 import "./styles/index.scss";
 import Canvas from "./canvas";
-import { getArcWidthForSide } from "../utils";
+import { getArcWidthForSide, isMobileDevice } from "../utils";
 
 const getClassName = (
   index: number,
@@ -115,19 +115,29 @@ const Cards = () => {
   const [cssVaribales, setCssVaribales] = useState({});
 
   useEffect(() => {
-    setCssVaribales({ "--translate-x": `-${window.innerWidth / 2 + 100}px` });
+    setArcWidth(isMobileDevice() ? 100 : 350);
+    setCssVaribales({
+      "--translate-x": `-${window.innerWidth / 2 + 150}px`,
+      "--selecting-card-position": "350px",
+    });
   }, []);
 
-  const handleSetSelectedCard = () => {
-    setSide("both");
-
-    setSelectedCard(() => {
-      const index = (selectedIndex + 1) % contents.length;
-      return {
-        selectedIndex: index,
-        ...contents[index],
-      };
-    });
+  const handleSetSelectedCard = (event: any) => {
+    const isMobile = isMobileDevice();
+    const { nativeEvent } = event;
+    if (
+      (isMobile && nativeEvent instanceof TouchEvent) ||
+      (!isMobile && nativeEvent instanceof MouseEvent)
+    ) {
+      setSide("both");
+      setSelectedCard(() => {
+        const index = (selectedIndex + 1) % contents.length;
+        return {
+          selectedIndex: index,
+          ...contents[index],
+        };
+      });
+    }
   };
 
   const renderCards = () => {
@@ -169,47 +179,67 @@ const Cards = () => {
   const handleMouseEnter = (event: any) => {
     const { dataset } = event.target;
     const { side: datasetID } = dataset;
-
-    if (side !== datasetID) {
-      setSide(() => datasetID);
-    }
-    if (navigator.userAgent.toLowerCase().includes("mobi")) {
-      setCssVaribales((cssVaribales) => ({
-        ...cssVaribales,
-        [`--selecting-card-position`]: `${
-          datasetID === "left" ? "-" : ""
-        }100px`,
-      }));
-    } else {
+    if (!isMobileDevice()) {
+      if (side !== datasetID) {
+        setSide(() => datasetID);
+      }
       setCssVaribales((cssVaribales) => ({
         ...cssVaribales,
         [`--selecting-card-position`]: `${
           datasetID === "left" ? "-" : ""
         }350px`,
       }));
+      // setArcWidth(getArcWidthForSide(event, datasetID));
+    }
+  };
+
+  const handleTouchEnter = (event: any) => {
+    const { dataset } = event.target;
+    const { side: datasetID } = dataset;
+
+    if (side !== datasetID) {
+      setSide(() => datasetID);
+    }
+    if (isMobileDevice()) {
+      setCssVaribales((cssVaribales) => ({
+        ...cssVaribales,
+        [`--selecting-card-position`]: `${
+          datasetID === "left" ? "-" : ""
+        }100px`,
+      }));
     }
 
-    setArcWidth(getArcWidthForSide(event, datasetID));
+    // setArcWidth(getArcWidthForSide(event, datasetID));
   };
 
   const handleMouseLeave = () => {
-    setSide(() => "none");
-  };
-
-  const handleTouchEnd = () => {
-    if (side === "left") {
-      handleSetSelectedCard();
-    } else {
-      handleSetSelectedCardNo();
+    if (!isMobileDevice()) {
+      // setSide(() => "none");
     }
   };
 
-  const handleSetSelectedCardNo = () => {
-    setSelectedCardNo(selectedIndex);
-    if (contentRef.current) {
-      const target = contentRef.current;
-      target.classList.remove("deSelectedCard");
-      target.classList.add("selectedCard");
+  const handleTouchEnd = (event: any) => {
+    if (side === "left") {
+      handleSetSelectedCard(event);
+    } else {
+      handleSetSelectedCardNo(event);
+    }
+  };
+
+  const handleSetSelectedCardNo = (event: any) => {
+    const isMobile = isMobileDevice();
+    const { nativeEvent } = event;
+    if (
+      (isMobile && nativeEvent instanceof TouchEvent) ||
+      (!isMobile && nativeEvent instanceof MouseEvent)
+    ) {
+      setSelectedCardNo(selectedIndex);
+      setSide("both");
+      if (contentRef.current) {
+        const target = contentRef.current;
+        target.classList.remove("deSelectedCard");
+        target.classList.add("selectedCard");
+      }
     }
   };
 
@@ -218,8 +248,6 @@ const Cards = () => {
   };
 
   const onHandleClick = () => {
-    // setSelectedCardNo(-1);
-    // setSide("none");
     if (contentRef.current) {
       const target = contentRef.current;
       target.classList.remove("selectedCard");
@@ -235,62 +263,60 @@ const Cards = () => {
   };
 
   return (
-    <CardContext.Provider value={{ selectedCard, setSelectedCard }}>
-      <div className="cards" style={cssVaribales}>
-        {renderCards()}
-      </div>
+    <div className="App" style={cssVaribales}>
+      <CardContext.Provider value={{ selectedCard, setSelectedCard }}>
+        <div className="cards">{renderCards()}</div>
 
-      <div
-        className={`showMeAndNextCard ${
-          selectedCardNo !== -1 ? "cardSelected" : ""
-        }`}
-      >
         <div
-          className="nextCard"
-          onClick={handleSetSelectedCard}
-          onTouchStart={handleMouseEnter}
-          onMouseEnter={handleMouseEnter}
-          onMouseMove={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onTouchEnd={handleTouchEnd}
-          data-side="left"
+          className={`showMeAndNextCard ${
+            selectedCardNo !== -1 ? "cardSelected" : ""
+          }`}
         >
-          Next Card
-        </div>
-        <div
-          className="showme"
-          onClick={handleSetSelectedCardNo}
-          onTouchStart={handleMouseEnter}
-          onMouseEnter={handleMouseEnter}
-          onMouseMove={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onTouchEnd={handleTouchEnd}
-          data-side="right"
-        >
-          Show me!
-        </div>
-      </div>
-
-      <Canvas
-        side={side}
-        backgroundColor={color}
-        nextColor={nextColor}
-        arcWidth={arcWidth}
-      />
-
-      <div
-        ref={contentRef}
-        className="flipCardContainer"
-        onClick={onHandleClick}
-      >
-        <div className={`flipCard`}>
-          <div className="front-face">font-face - {content}</div>
-          <div className="back-face">
-            <button>Close</button>Back face - {content}
+          <div
+            className="nextCard"
+            onClick={handleSetSelectedCard}
+            onTouchStart={handleTouchEnter}
+            onMouseEnter={handleMouseEnter}
+            onMouseMove={handleMouseEnter}
+            onTouchEnd={handleTouchEnd}
+            data-side="left"
+          >
+            Next Card
+          </div>
+          <div
+            className="showme"
+            onClick={handleSetSelectedCardNo}
+            onTouchStart={handleTouchEnter}
+            onMouseEnter={handleMouseEnter}
+            onMouseMove={handleMouseEnter}
+            onTouchEnd={handleTouchEnd}
+            data-side="right"
+          >
+            Show me!
           </div>
         </div>
-      </div>
-    </CardContext.Provider>
+
+        <Canvas
+          side={side}
+          backgroundColor={color}
+          nextColor={nextColor}
+          arcWidth={arcWidth}
+        />
+
+        <div
+          ref={contentRef}
+          className="flipCardContainer"
+          onClick={onHandleClick}
+        >
+          <div className={`flipCard`}>
+            <div className="front-face">font-face - {content}</div>
+            <div className="back-face">
+              <button>Close</button>Back face - {content}
+            </div>
+          </div>
+        </div>
+      </CardContext.Provider>
+    </div>
   );
 };
 

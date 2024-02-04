@@ -1,12 +1,12 @@
 * {
     @keyframes slideSwipeOut {
         0% {
-            transform: perspective(300px) rotateY(0.95turn) translateX(var(--selecting-card-position)) scale(1.25);
+            transform: translateZ(500px) perspective(300px) rotateY(0.95turn) translateX(var(--selecting-card-position))
+                scale(1.25);
         }
 
         100% {
-            display: none;
-            transform: translateX(var(--translate-x)) rotateY(0.5turn);
+            transform: translateZ(500px) translateX(var(--translate-x)) rotateY(0.5turn) translateZ(200px);
         }
     }
 
