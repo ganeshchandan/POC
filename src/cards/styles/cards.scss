@@ -78,6 +78,12 @@
             position: absolute;
             &.cardSelected {
                 pointer-events: none;
+                .nextCard {
+                    transform: translateX(var(--translate-x));
+                }
+                .showme {
+                    transform: translateX(calc(var(--translate-x) * -1));
+                }
             }
             .nextCard,
             .showme {
@@ -129,7 +135,7 @@
                 margin: auto;
                 border: 2px solid #fafafa;
                 padding: 10px;
-                transition: all 1s linear;
+                transition: all 1.3s linear;
                 transform-style: preserve-3d;
                 background: #fff;
                 backface-visibility: hidden;
@@ -153,11 +159,13 @@
                 }
 
                 &.selectingCard_left {
+                    z-index: 3;
                     display: block !important;
                     transform: perspective(300px) rotateY(-21deg) translateX(var(--selecting-card-position))
                         translateZ(50px) scale(1.25);
                 }
                 &.selectingCard_right {
+                    z-index: 3;
                     display: block !important;
                     transform: perspective(300px) rotateY(21deg) translateX(var(--selecting-card-position))
                         translateZ(50px) scale(1.25);

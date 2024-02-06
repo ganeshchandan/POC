@@ -219,6 +219,8 @@ const Cards = () => {
   };
 
   const handleTouchEnd = (event: any) => {
+    const { dataset } = event.target;
+    const { side } = dataset;
     if (side === "left") {
       handleSetSelectedCard(event);
     } else {
@@ -247,7 +249,7 @@ const Cards = () => {
     setSelectedCardNo(-1);
   };
 
-  const onHandleClick = () => {
+  const onCloseSelectedCard = () => {
     if (contentRef.current) {
       const target = contentRef.current;
       target.classList.remove("selectedCard");
@@ -262,6 +264,19 @@ const Cards = () => {
     }
   };
 
+  const handleSideClick = (event: any) => {};
+
+  const handleEvents = isMobileDevice()
+    ? {
+        onTouchStart: handleTouchEnter,
+        onTouchEnd: handleTouchEnd,
+      }
+    : {
+        onClick: handleTouchEnd,
+        onMouseEnter: handleMouseEnter,
+        onMouseMove: handleMouseEnter,
+      };
+
   return (
     <div className="App" style={cssVaribales}>
       <CardContext.Provider value={{ selectedCard, setSelectedCard }}>
@@ -274,22 +289,24 @@ const Cards = () => {
         >
           <div
             className="nextCard"
-            onClick={handleSetSelectedCard}
-            onTouchStart={handleTouchEnter}
-            onMouseEnter={handleMouseEnter}
-            onMouseMove={handleMouseEnter}
-            onTouchEnd={handleTouchEnd}
+            // onClick={handleSetSelectedCard}
+            // onTouchStart={handleTouchEnter}
+            // onMouseEnter={handleMouseEnter}
+            // onMouseMove={handleMouseEnter}
+            // onTouchEnd={handleTouchEnd}
+            {...handleEvents}
             data-side="left"
           >
             Next Card
           </div>
           <div
             className="showme"
-            onClick={handleSetSelectedCardNo}
-            onTouchStart={handleTouchEnter}
-            onMouseEnter={handleMouseEnter}
-            onMouseMove={handleMouseEnter}
-            onTouchEnd={handleTouchEnd}
+            // onClick={handleSetSelectedCardNo}
+            // onTouchStart={handleTouchEnter}
+            // onMouseEnter={handleMouseEnter}
+            // onMouseMove={handleMouseEnter}
+            // onTouchEnd={handleTouchEnd}
+            {...handleEvents}
             data-side="right"
           >
             Show me!
@@ -306,7 +323,7 @@ const Cards = () => {
         <div
           ref={contentRef}
           className="flipCardContainer"
-          onClick={onHandleClick}
+          onClick={onCloseSelectedCard}
         >
           <div className={`flipCard`}>
             <div className="front-face">font-face - {content}</div>
