@@ -6,6 +6,7 @@
         }
 
         100% {
+            display: none;
             transform: translateZ(500px) translateX(var(--translate-x)) rotateY(0.5turn) translateZ(200px);
         }
     }
@@ -76,6 +77,7 @@
             color: #202124;
             font-weight: 700;
             position: absolute;
+            touch-action: pan-y;
             &.cardSelected {
                 pointer-events: none;
                 .nextCard {
@@ -98,23 +100,24 @@
                 padding-bottom: 40px;
                 box-sizing: border-box;
                 transition: all 1s ease-in-out;
+                touch-action: pan-y;
             }
-            .nextCard {
-                &:hover {
-                    -webkit-transform: translate3d(-150px, 0px, 0px);
-                    transform: translate3d(-150px, 0px, 0px);
-                    color: #fff;
-                    opacity: 1;
-                }
-            }
-            .showme {
-                &:hover {
-                    -webkit-transform: translate3d(150px, 0px, 0px);
-                    transform: translate3d(150px, 0px, 0px);
-                    color: #fff;
-                    opacity: 1;
-                }
-            }
+            // .nextCard {
+            //     &:hover {
+            //         -webkit-transform: translate3d(-150px, 0px, 0px);
+            //         transform: translate3d(-150px, 0px, 0px);
+            //         color: #fff;
+            //         opacity: 1;
+            //     }
+            // }
+            // .showme {
+            //     &:hover {
+            //         -webkit-transform: translate3d(150px, 0px, 0px);
+            //         transform: translate3d(150px, 0px, 0px);
+            //         color: #fff;
+            //         opacity: 1;
+            //     }
+            // }
         }
         .cards {
             height: 100%;

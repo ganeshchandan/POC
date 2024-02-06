@@ -1,5 +1,5 @@
 * {
-    @media only screen and (max-width: 1100px) {
+    @media (min-width: 501px) and (max-width: 1100px) {
         .showMeAndNextCard {
             > .nextCard,
             .showme {
@@ -22,7 +22,7 @@
             .showme {
                 padding-bottom: 30% !important;
                 align-items: end !important;
-                transform: none !important;
+                // transform: none !important;
             }
             .nextCard {
                 justify-content: flex-end;
@@ -31,6 +31,26 @@
             .showme {
                 justify-content: flex-start;
                 padding-left: 10%;
+            }
+        }
+    }
+    @media (hover: hover) {
+        .showMeAndNextCard {
+            .nextCard {
+                &:hover {
+                    -webkit-transform: translate3d(-150px, 0px, 0px);
+                    transform: translate3d(-150px, 0px, 0px);
+                    color: #fff !important;
+                    opacity: 1;
+                }
+            }
+            .showme {
+                &:hover {
+                    -webkit-transform: translate3d(150px, 0px, 0px);
+                    transform: translate3d(150px, 0px, 0px);
+                    color: #fff !important;
+                    opacity: 1;
+                }
             }
         }
     }
