@@ -115,10 +115,11 @@ const Cards = () => {
   const [cssVaribales, setCssVaribales] = useState({});
 
   useEffect(() => {
-    setArcWidth(isMobileDevice() ? 100 : 350);
+    const width = isMobileDevice() ? 100 : 350;
+    setArcWidth(width);
     setCssVaribales({
       "--translate-x": `-${window.innerWidth / 2 + 150}px`,
-      "--selecting-card-position": "350px",
+      "--selecting-card-position": `${width}px`,
     });
   }, []);
 
@@ -177,6 +178,7 @@ const Cards = () => {
   };
 
   const handleMouseEnter = (event: any) => {
+    event.stopPropagation();
     const { dataset } = event.target;
     const { side: datasetID } = dataset;
     if (!isMobileDevice()) {
@@ -194,6 +196,7 @@ const Cards = () => {
   };
 
   const handleTouchEnter = (event: any) => {
+    event.stopPropagation();
     const { dataset } = event.target;
     const { side: datasetID } = dataset;
 
@@ -219,6 +222,7 @@ const Cards = () => {
   };
 
   const handleTouchEnd = (event: any) => {
+    event.stopPropagation();
     const { dataset } = event.target;
     const { side } = dataset;
     if (side === "left") {
@@ -229,6 +233,7 @@ const Cards = () => {
   };
 
   const handleSetSelectedCardNo = (event: any) => {
+    event.stopPropagation();
     const isMobile = isMobileDevice();
     const { nativeEvent } = event;
     if (
@@ -249,7 +254,8 @@ const Cards = () => {
     setSelectedCardNo(-1);
   };
 
-  const onCloseSelectedCard = () => {
+  const onCloseSelectedCard = (event: any) => {
+    event.stopPropagation();
     if (contentRef.current) {
       const target = contentRef.current;
       target.classList.remove("selectedCard");

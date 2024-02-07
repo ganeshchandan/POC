@@ -1,13 +1,16 @@
 * {
     @keyframes slideSwipeOut {
         0% {
-            transform: translateZ(500px) perspective(300px) rotateY(0.95turn) translateX(var(--selecting-card-position))
+            display: block;
+            -webkit-transform: perspective(300px) rotateY(0.95turn) translateX(var(--selecting-card-position))
                 scale(1.25);
+            transform: perspective(300px) rotateY(0.95turn) translateX(var(--selecting-card-position)) scale(1.25);
         }
 
         100% {
             display: none;
-            transform: translateZ(500px) translateX(var(--translate-x)) rotateY(0.5turn) translateZ(200px);
+            -webkit-transform: translateX(var(--translate-x)) rotateY(0.5turn);
+            transform: translateX(var(--translate-x)) rotateY(0.5turn);
         }
     }
 
@@ -175,7 +178,7 @@
                 }
 
                 &.lastCardSwip {
-                    display: block;
+                    // display: block;
                     animation-name: slideSwipeOut;
                     animation-duration: 1s;
                     animation-timing-function: linear;
@@ -185,6 +188,7 @@
                 &.activeCard {
                     z-index: 3;
                     display: block;
+                    // transform: translateZ(50px);
                     box-shadow: 87px 0px 5px rgba(0, 0, 0, 0.1);
                 }
 
@@ -222,16 +226,16 @@
                     perspective: unset;
                 }
 
-                &.deselectedCard {
-                    display: block;
-                    animation-fill-mode: forwards;
-                    animation-name: slideDeselected;
-                    animation-duration: 1s;
-                    animation-timing-function: linear;
-                    .closeIcon {
-                        display: none;
-                    }
-                }
+                // &.deselectedCard {
+                //     display: block;
+                //     animation-fill-mode: forwards;
+                //     animation-name: slideDeselected;
+                //     animation-duration: 1s;
+                //     animation-timing-function: linear;
+                //     .closeIcon {
+                //         display: none;
+                //     }
+                // }
             }
         }
     }
