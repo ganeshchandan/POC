@@ -5,78 +5,47 @@
             height: 80%;
             color: transparent;
             top: 0;
-            transform: rotateY(0.5turn) translateZ(50px);
+            // left: -150px;
+            transform: translateZ(80px) rotateY(0.5turn) scale(1.25);
         }
-
-        // 25% {
-        //     width: 300px;
-        //     transform: rotateY(0.65turn);
-        // }
 
         50% {
             color: transparent;
-            transform: rotateY(0.25turn) translateZ(30px);
+            // left: -150px;
+            transform: translateZ(80px) rotateY(0.25turn);
         }
 
         75% {
-            // color: transparent;
-            width: 200px;
-            height: 300px;
-            transform: rotateY(0.15turn) translateZ(20px);
+            height: 400px;
+            width: 300px;
+            transform: translateZ(80px) rotateY(0.15turn);
         }
-
-        // 99% {
-        //     color: transparent;
-        //     transform: perspective(300px) translate3d(300px, 0, 0) rotateY(0.51turn);
-        // }
-
         100% {
-            // color: transparent;
-            width: 200px;
-            height: 300px;
-            z-index: -1;
+            height: 400px;
+            width: 300px;
             top: 0;
-            transform: rotateY(0turn) translateZ(50px);
+            transform: translateZ(0px) rotateY(0turn) scale(1.1);
+            z-index: -1;
         }
     }
     @keyframes slideSelectedContent {
-        // 0% {
-        //     color: transparent;
-        //     display: none;
-        //     transform: perspective(600px) rotateY(0turn);
-        // }
         0% {
             display: block;
             color: transparent;
-            // visibility: hidden;
-            transform: perspective(600px) translate3d(var(--selecting-card-position), 0, 0) rotateY(0.75turn);
+            transform: perspective(600px) translateZ(100px) translateX(350px) rotateY(0.75turn);
         }
 
-        // 50% {
-        //     color: transparent;
-        //     visibility: visible;
-        //     transform: rotateY(0.85turn);
-        //     // perspective-origin: right bottom;
-        // }
-
-        // 75% {
-        //     visibility: visible;
-        //     width: 40%;
-        //     height: 40%;
-        // }
-
         99% {
-            visibility: visible;
+            // visibility: visible;
             color: transparent;
         }
 
         100% {
-            perspective-origin: right bottom;
             width: 70%;
             height: 80%;
             top: calc(100% - 80%);
             visibility: visible;
-            transform: translate3d(0px, 0, 0) rotateY(0.5turn);
+            transform: translateZ(100px) translateX(0px) rotateY(0.5turn);
         }
     }
 
@@ -88,6 +57,10 @@
         &.selectedCard {
             z-index: 10;
             .flipCard {
+                background-color: #fff;
+                .front-face {
+                    opacity: 0;
+                }
                 animation-fill-mode: forwards;
                 animation-name: slideSelectedContent;
                 animation-duration: 1s;
@@ -97,7 +70,9 @@
 
         &.deSelectedCard {
             z-index: 10;
+            transform-origin: center;
             .flipCard {
+                // opacity: 0;
                 animation-fill-mode: forwards;
                 animation-name: slideDeSelectedContent;
                 animation-duration: 1s;
@@ -150,6 +125,13 @@
                 transform: rotateY(0.5turn);
                 z-index: 1;
                 position: absolute;
+            }
+            .front-face {
+                .cardPreviewContent {
+                    overflow: hidden;
+                    width: 100%;
+                    // height: 400px;
+                }
             }
 
             .front-face,

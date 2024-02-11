@@ -10,6 +10,7 @@ import Card from "./card";
 import "./styles/index.scss";
 import Canvas from "./canvas";
 import { getArcWidthForSide, isMobileDevice } from "../utils";
+import CardContent from "./card_content";
 
 const getClassName = (
   index: number,
@@ -90,7 +91,7 @@ const contents = [
     color: "#ceead6",
     header: "bidar",
     sample:
-      "An important seat for numerous dynasties, Bidar is an important historical place in Karnataka.Once the seat of Chalukyas, Allaludin Khilji and Muhammad bin Tughluq, the city houses numerous sites and monuments reflecting the legacy of the rulers.",
+      "Bidar is an important historical place in Karnataka.Once the seat of Chalukyas, Allaludin Khilji and Muhammad bin Tughluq",
     content:
       "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English",
   },
@@ -199,11 +200,9 @@ const Cards = () => {
         return (
           <Card
             ref={selectedIndex === index ? cardsRef : null}
-            handleCloseClick={handleCloseClick}
             details={content}
             key={index}
             className={className}
-            isSelected={index === selectedCardNo}
           />
         );
       }
@@ -309,8 +308,6 @@ const Cards = () => {
     }
   };
 
-  const handleSideClick = (event: any) => {};
-
   const updatePosition = (x3: number, drawingDirection: string) => {
     const current = cardsRef.current;
     if (current) {
@@ -318,7 +315,7 @@ const Cards = () => {
       const rotateY =
         x3 * multiplier * 0.06 * (drawingDirection === "left" ? -1 : 1);
       x3 = x3 - (current.clientWidth / 2) * multiplier * 0.06;
-      current.style.transform = `perspective(300px) rotateY(${rotateY}deg) translateX(${x3}px) translateZ(70px)`;
+      current.style.transform = `perspective(300px) rotateY(${rotateY}deg) translateX(${x3}px) translateZ(80px)`;
     }
   };
 
@@ -383,10 +380,11 @@ const Cards = () => {
           onClick={onCloseSelectedCard}
         >
           <div className={`flipCard`}>
-            <div className="front-face">font-face - {content}</div>
+            {/* <div className="front-face">font-face - {content}</div>
             <div className="back-face">
               <button>Close</button>Back face - {content}
-            </div>
+            </div> */}
+            <CardContent details={contents[selectedIndex]} />
           </div>
         </div>
       </CardContext.Provider>

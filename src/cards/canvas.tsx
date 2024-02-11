@@ -132,11 +132,10 @@ const Canvas = ({
     if (ctx) {
       ctx.clearRect(0, 0, 3000, 3000);
       const width = timerRef.current.startPosition;
-      const drwaingWidth = timerRef.current.width + 2 * addOrDelete;
+      const drwaingWidth = timerRef.current.width + 3 * addOrDelete;
       const curveWidth = width - drwaingWidth;
       let x3 = 0;
       let x2 = 0;
-      let stopDraw = false;
       const curvePosition = curveWidth * 0.7;
       ctx.clearRect(0, 0, 3000, 3000);
 

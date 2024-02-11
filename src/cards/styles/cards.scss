@@ -1,51 +1,19 @@
 * {
     @keyframes slideSwipeOut {
-        0% {
+        from {
             display: block;
-            -webkit-transform: perspective(300px) rotateY(0.95turn) translateX(var(--selecting-card-position))
-                scale(1.25);
-            transform: perspective(300px) rotateY(0.95turn) translateX(var(--selecting-card-position)) scale(1.25);
+            -webkit-transform: perspective(300px) translateX(var(--selecting-card-position)) rotateY(0.95turn)
+                scale3d(1, 1, 1);
+            transform: perspective(300px) translateX(var(--selecting-card-position)) rotateY(0.95turn) scale3d(1, 1, 1);
         }
 
-        100% {
+        to {
             display: none;
-            -webkit-transform: translateX(var(--translate-x)) rotateY(0.5turn);
-            transform: translateX(var(--translate-x)) rotateY(0.5turn);
+            -webkit-transform: translateX(var(--translate-x)) rotateY(0.5turn) scale3d(0.3, 0.8, 1);
+            transform: translateX(var(--translate-x)) rotateY(0.5turn) scale3d(0.3, 0.8, 1);
         }
     }
 
-    @keyframes slideDeselected {
-        0% {
-            display: block;
-            z-index: 0;
-            width: 700px;
-            transform: matrix(1, 0, 0, 1, 0, 200);
-        }
-
-        20% {
-            width: 620px;
-            transform: matrix(1, 0.19, 0, 1, 50, 160);
-        }
-
-        40% {
-            width: 540px;
-            transform: matrix(1, 0.39, 0, 1, 100, 120);
-        }
-
-        60% {
-            width: 300px;
-            transform: matrix(1, 0.59, 0, 1, 150, 80);
-        }
-
-        80% {
-            width: 300px;
-            transform: matrix(1, 0.39, 0, 1, 75, 40);
-        }
-
-        100% {
-            transform: matrix(1, 0, 0, 1, 0, 0);
-        }
-    }
     .App {
         overflow: hidden;
         position: relative;
@@ -130,8 +98,8 @@
             backface-visibility: hidden;
             .card {
                 display: none;
-                height: 300px;
-                width: 200px;
+                height: 400px;
+                width: 300px;
                 border-radius: 10px;
                 position: absolute;
                 top: 0;
@@ -145,6 +113,7 @@
                 transform-style: preserve-3d;
                 background: #fff;
                 backface-visibility: hidden;
+                box-sizing: border-box;
 
                 .front-face,
                 .back-face {
@@ -168,7 +137,7 @@
                 &.selectingCard_right {
                     z-index: 3;
                     display: block !important;
-                    transition: all 0s linear;
+                    transition: transform 0s linear;
                     perspective: 300px;
                     // transform: perspective(300px) rotateY(-21deg) translateX(var(--selecting-card-position))
                     // translateZ(50px) scale(1.25);
