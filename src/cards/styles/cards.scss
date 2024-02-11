@@ -125,6 +125,7 @@
                 }
 
                 &.lastCardSwip {
+                    transform: translateZ(0px);
                     display: block;
                     animation-name: slideSwipeOut;
                     animation-duration: 1s;
