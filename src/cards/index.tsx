@@ -108,29 +108,27 @@ const Cards = () => {
     let lastCardSwip = selectedIndex - 1;
     lastCardSwip = lastCardSwip === -1 ? length - 1 : lastCardSwip;
 
-    const html = [selectedIndex, secondIndex, thirdIndex, lastCardSwip].map(
-      (index) => {
-        const content = contents[index];
-        let className = getClassName(
-          index,
-          selectedCardNo,
-          side,
-          selectedIndex,
-          secondIndex,
-          thirdIndex,
-          lastCardSwip
-        );
+    const html = contents.map((content, index) => {
+      // const content = contents[index];
+      let className = getClassName(
+        index,
+        selectedCardNo,
+        side,
+        selectedIndex,
+        secondIndex,
+        thirdIndex,
+        lastCardSwip
+      );
 
-        return (
-          <Card
-            ref={selectedIndex === index ? cardsRef : null}
-            details={content}
-            key={index}
-            className={className}
-          />
-        );
-      }
-    );
+      return (
+        <Card
+          ref={selectedIndex === index ? cardsRef : null}
+          details={content}
+          key={index}
+          className={className}
+        />
+      );
+    });
     return html;
   };
 
