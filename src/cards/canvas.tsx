@@ -50,9 +50,16 @@ interface ICanvas {
   backgroundColor: string;
   nextColor: string;
   arcWidth: number;
+  updatePosition: (width: number) => void;
 }
 
-const Canvas = ({ side, backgroundColor, nextColor, arcWidth }: ICanvas) => {
+const Canvas = ({
+  side,
+  backgroundColor,
+  nextColor,
+  arcWidth,
+  updatePosition,
+}: ICanvas) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const timerRef = useRef<NodeJS.Timeout>();
 
@@ -62,12 +69,7 @@ const Canvas = ({ side, backgroundColor, nextColor, arcWidth }: ICanvas) => {
     let halfWidth = width / 2;
     const quterWidth = halfWidth / 2;
     const height = window.innerHeight;
-    const ctx = canvasRef.current?.getContext("2d");
 
-    if (ctx) {
-      // ctx.clear(true);
-      // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-    }
     if (side === "both") {
       bothSideCanvas(width, height, 0, nextColor);
     } else if (side === "reverse_both") {
@@ -98,6 +100,7 @@ const Canvas = ({ side, backgroundColor, nextColor, arcWidth }: ICanvas) => {
       let stopDraw = false;
       const curvePosition = curveWidth * 0.7;
       ctx.clearRect(0, 0, 3000, 3000);
+
       if (side === "left") {
         x2 = width - curveWidth;
         x3 = x2 - curvePosition;
@@ -108,6 +111,8 @@ const Canvas = ({ side, backgroundColor, nextColor, arcWidth }: ICanvas) => {
         stopDraw = x3 >= width + arcWidth;
         nextColor = "rgba(0, 0, 0, 0.3)";
       }
+
+      updatePosition(x3 - width);
 
       arcDraw(
         ctx,

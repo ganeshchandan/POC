@@ -1,0 +1,33 @@
+* {
+    .cardPreview {
+        display: grid;
+        grid-template-rows: 40px auto;
+        padding: 10px 0;
+        width: 100%;
+        box-sizing: border-box;
+        .cardPreviewHeader {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 15px;
+            span {
+                height: 23px;
+                padding: 0 10px;
+                color: #fff;
+                // background-color: red;
+                line-height: 23px;
+                border-radius: 23px;
+                font-size: 12px;
+            }
+        }
+        .cardPreviewImage {
+            padding: 10px;
+            display: grid;
+            align-items: center;
+            img {
+                width: 100%;
+                height: 186px;
+            }
+        }
+    }
+}

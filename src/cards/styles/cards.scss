@@ -164,21 +164,25 @@
                     transform: rotateY(0.5turn);
                 }
 
-                &.selectingCard_left {
-                    z-index: 3;
-                    display: block !important;
-                    transform: perspective(300px) rotateY(-21deg) translateX(var(--selecting-card-position))
-                        translateZ(50px) scale(1.25);
-                }
+                &.selectingCard_left,
                 &.selectingCard_right {
                     z-index: 3;
                     display: block !important;
-                    transform: perspective(300px) rotateY(21deg) translateX(var(--selecting-card-position))
-                        translateZ(50px) scale(1.25);
+                    transition: all 0s linear;
+                    perspective: 300px;
+                    // transform: perspective(300px) rotateY(-21deg) translateX(var(--selecting-card-position))
+                    // translateZ(50px) scale(1.25);
                 }
+                // &.selectingCard_right {
+                //     z-index: 3;
+                //     display: block !important;
+                //     transition: all 0s linear;
+                //     // transform: perspective(300px) rotateY(21deg) translateX(var(--selecting-card-position))
+                //     //     translateZ(50px) scale(1.25);
+                // }
 
                 &.lastCardSwip {
-                    // display: block;
+                    display: block;
                     animation-name: slideSwipeOut;
                     animation-duration: 1s;
                     animation-timing-function: linear;
