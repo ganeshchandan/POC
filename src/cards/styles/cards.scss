@@ -2,15 +2,16 @@
     @keyframes slideSwipeOut {
         from {
             display: block;
-            -webkit-transform: perspective(300px) translateX(var(--selecting-card-position)) rotateY(0.95turn)
-                scale3d(1, 1, 1);
-            transform: perspective(300px) translateX(var(--selecting-card-position)) rotateY(0.95turn) scale3d(1, 1, 1);
+            -webkit-transform: perspective(300px) translateX(var(--selecting-card-position)) translateZ(50px)
+                rotateY(0.95turn) scale3d(1, 1, 0.5);
+            transform: perspective(300px) translateX(var(--selecting-card-position)) translateZ(50px) rotateY(0.95turn)
+                scale3d(1, 1, 0.5);
         }
 
         to {
             display: none;
-            -webkit-transform: translateX(var(--translate-x)) rotateY(0.5turn) scale3d(0.3, 0.8, 1);
-            transform: translateX(var(--translate-x)) rotateY(0.5turn) scale3d(0.3, 0.8, 1);
+            -webkit-transform: translateX(var(--translate-x)) translateZ(50px) rotateY(0.5turn) scale3d(0.1, 0.8, 0.5);
+            transform: translateX(var(--translate-x)) translateZ(50px) rotateY(0.5turn) scale3d(0.1, 0.8, 0.5);
         }
     }
 
@@ -48,7 +49,7 @@
             color: #202124;
             font-weight: 700;
             position: absolute;
-            // touch-action: pan-y;
+            touch-action: pan-y;
             &.cardSelected {
                 pointer-events: none;
                 .nextCard {
@@ -71,7 +72,7 @@
                 padding-bottom: 40px;
                 box-sizing: border-box;
                 transition: all 1s ease-in-out;
-                // touch-action: pan-y;
+                touch-action: pan-y;
             }
             // .nextCard {
             //     &:hover {
@@ -162,7 +163,7 @@
                     z-index: 3;
                     display: block;
                     // transform: translateZ(50px);
-                    box-shadow: 87px 0px 5px rgba(0, 0, 0, 0.1);
+                    box-shadow: 5px 5px 5px #fafafa;
                 }
 
                 &.secondCard {

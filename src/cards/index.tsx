@@ -74,8 +74,6 @@ const Cards = () => {
   const [arcWidth, setArcWidth] = useState(0);
   const [cssVaribales, setCssVaribales] = useState({});
 
-  console.log((selectedIndex + 1) % contents.length);
-
   useEffect(() => {
     const width = isMobileDevice() ? 100 : 350;
     setArcWidth(width);

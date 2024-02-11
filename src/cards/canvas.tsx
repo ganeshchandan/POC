@@ -102,7 +102,8 @@ const Canvas = ({
       );
     } else if (side !== "none") {
       const endPosition =
-        timerRef.current.startPosition + (side === LEFT_SIDE ? -350 : 350);
+        timerRef.current.startPosition +
+        (side === LEFT_SIDE ? -1 : 1) * arcWidth;
       const addOrDelete = timerRef.current.width < endPosition ? 1 : -1;
 
       oneSideCanvas(
@@ -110,9 +111,9 @@ const Canvas = ({
         nextColor,
         addOrDelete,
         endPosition,
-        side,
+        side
         // timerRef.current.width,
-        arcWidth
+        // arcWidth
       );
     }
   }, [side]);
@@ -122,8 +123,7 @@ const Canvas = ({
     nextColor: string,
     addOrDelete: number,
     endPosition: number,
-    side: TSide,
-    arcWidth: number
+    side: TSide
   ) => {
     if (side !== LEFT_SIDE && side !== RIGHT_SIDE) {
       return;
@@ -175,9 +175,9 @@ const Canvas = ({
               nextColor,
               addOrDelete,
               endPosition,
-              side,
+              side
               // width,
-              arcWidth
+              // arcWidth
             ),
           0
         );
