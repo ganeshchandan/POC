@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { TSide } from ".";
+import { LEFT_SIDE, RIGHT_SIDE } from "./constant";
 
 const arcDraw = (
   ctx: CanvasRenderingContext2D,
@@ -101,7 +102,7 @@ const Canvas = ({
       );
     } else if (side !== "none") {
       const endPosition =
-        timerRef.current.startPosition + (side === "left" ? -350 : 350);
+        timerRef.current.startPosition + (side === LEFT_SIDE ? -350 : 350);
       const addOrDelete = timerRef.current.width < endPosition ? 1 : -1;
 
       oneSideCanvas(
@@ -124,7 +125,7 @@ const Canvas = ({
     side: TSide,
     arcWidth: number
   ) => {
-    if (side !== "left" && side !== "right") {
+    if (side !== LEFT_SIDE && side !== RIGHT_SIDE) {
       return;
     }
 
@@ -151,7 +152,7 @@ const Canvas = ({
 
       const canvasColor = x3 < width ? nextColor : "rgba(0, 0, 0, 0.3)";
 
-      updatePosition(x3 - width, x3 < width ? "left" : "right");
+      updatePosition(x3 - width, x3 < width ? LEFT_SIDE : RIGHT_SIDE);
 
       timerRef.current.width = drwaingWidth;
 

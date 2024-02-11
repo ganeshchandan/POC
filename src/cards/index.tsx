@@ -9,8 +9,9 @@ import {
 import Card from "./card";
 import "./styles/index.scss";
 import Canvas from "./canvas";
-import { getArcWidthForSide, isMobileDevice } from "../utils";
+import { isMobileDevice } from "../utils";
 import CardContent from "./card_content";
+import { contents, LEFT_SIDE, RIGHT_SIDE } from "./constant";
 
 const getClassName = (
   index: number,
@@ -58,74 +59,7 @@ const CardContext = createContext<{
 
 export type TSide = "none" | "left" | "right" | "both" | "reverse_both";
 
-const contents = [
-  {
-    id: 0,
-    color: "#0073e6",
-    header: "Aihole",
-    sample:
-      "The intricately carved temples are surrounded by sandstone hills and the river Malaprabha, gifting your eyes with a marvellous view.",
-    content:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
-  },
-  {
-    id: 1,
-    color: "#e42616",
-    header: "badami",
-    sample:
-      "Famous for the Badami caves, the rock-cut Temples of Mahakuta is a famous historical site built in the 7th century. Located on the banks of the Agastya Tirtha Lake",
-    content:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English",
-  },
-  {
-    id: 2,
-    color: "#2991f5",
-    header: "belur",
-    sample:
-      "Famous for its age-old Hindu and Jain temples, the towns provide an insight into the rich history of the Hoysala dynasty.",
-    content:
-      "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur",
-  },
-  {
-    id: 3,
-    color: "#ceead6",
-    header: "bidar",
-    sample:
-      "Bidar is an important historical place in Karnataka.Once the seat of Chalukyas, Allaludin Khilji and Muhammad bin Tughluq",
-    content:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English",
-  },
-  {
-    id: 4,
-    color: "#ee5143",
-    header: "bijapur",
-    sample:
-      "Bijapur is famous for housing the biggest domes in India. You can see the influence of the Chalukyas among all the monuments, temples and elaborate gardens.",
-    content:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English",
-  },
-  {
-    id: 5,
-    color: "#1fb254",
-    header: "hampi",
-    sample:
-      "The City Of Ruins, Hampi, is known for its ancient monuments, temples and, most importantly, the remains from the Vijayanagar Empire.",
-    content:
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English",
-  },
-  {
-    id: 6,
-    color: "#202124",
-    header: "Srirangapatna",
-    sample:
-      "Srirangapatna was the home of the Vijayanagara and Hoysala kingdoms. The town earns its name from the Sri Ranganatha temple, one of the largest temples in Karnataka.",
-    content:
-      "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur",
-  },
-];
-
 const Cards = () => {
-  // const [translateX, setTranslateX] = useState("-1200px");
   const contentRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const [selectedCard, setSelectedCard] = useState({
@@ -135,10 +69,12 @@ const Cards = () => {
   const [side, setSide] = useState<TSide>("none");
   const { selectedIndex, color } = selectedCard;
   const [selectedCardNo, setSelectedCardNo] = useState(-1);
-  const { color: nextColor = "#0073e6", content } =
+  const { color: nextColor = "#0073e6" } =
     contents[(selectedIndex + 1) % contents.length];
   const [arcWidth, setArcWidth] = useState(0);
   const [cssVaribales, setCssVaribales] = useState({});
+
+  console.log((selectedIndex + 1) % contents.length);
 
   useEffect(() => {
     const width = isMobileDevice() ? 100 : 350;
@@ -186,17 +122,7 @@ const Cards = () => {
           thirdIndex,
           lastCardSwip
         );
-        // if(index === selectedCardNo){
-        //     className = " selectedCard"
-        // } else if(selectedIndex === index){
-        //     className = `activeCard selectingCard_${side}`;
-        // } else if(secondIndex === index){
-        //     className = "secondCard";
-        // } else if(thirdIndex === index){
-        //     className = "thirdCard";
-        // } else if(selectedIndex - 1 === index){
-        //     className = "lastCardSwip"
-        // }
+
         return (
           <Card
             ref={selectedIndex === index ? cardsRef : null}
@@ -221,27 +147,26 @@ const Cards = () => {
       setCssVaribales((cssVaribales) => ({
         ...cssVaribales,
         [`--selecting-card-position`]: `${
-          datasetID === "left" ? "-" : ""
+          datasetID === LEFT_SIDE ? "-" : ""
         }350px`,
       }));
-      // setArcWidth(getArcWidthForSide(event, datasetID));
     }
   };
 
   const handleTouchEnter = (event: any) => {
-    console.log("ganesh here handleTouchEnter");
     event.stopPropagation();
-    const { dataset } = event.target;
-    const { side: datasetID } = dataset;
+    const clientX = event.touches[0].clientX;
+    const datasetID = clientX < window.innerWidth / 2 ? LEFT_SIDE : RIGHT_SIDE;
 
     if (side !== datasetID) {
       setSide(() => datasetID);
     }
+
     if (isMobileDevice()) {
       setCssVaribales((cssVaribales) => ({
         ...cssVaribales,
         [`--selecting-card-position`]: `${
-          datasetID === "left" ? "-" : ""
+          datasetID === LEFT_SIDE ? "-" : ""
         }100px`,
       }));
     }
@@ -249,17 +174,9 @@ const Cards = () => {
     // setArcWidth(getArcWidthForSide(event, datasetID));
   };
 
-  const handleMouseLeave = () => {
-    if (!isMobileDevice()) {
-      // setSide(() => "none");
-    }
-  };
-
   const handleTouchEnd = (event: any) => {
     event.stopPropagation();
-    const { dataset } = event.target;
-    const { side } = dataset;
-    if (side === "left") {
+    if (side === LEFT_SIDE) {
       handleSetSelectedCard(event);
     } else {
       handleSetSelectedCardNo(event);
@@ -313,7 +230,7 @@ const Cards = () => {
     if (current) {
       const multiplier = x3 < 0 ? -1 : 1;
       const rotateY =
-        x3 * multiplier * 0.06 * (drawingDirection === "left" ? -1 : 1);
+        x3 * multiplier * 0.06 * (drawingDirection === LEFT_SIDE ? -1 : 1);
       x3 = x3 - (current.clientWidth / 2) * multiplier * 0.06;
       current.style.transform = `perspective(300px) rotateY(${rotateY}deg) translateX(${x3}px) translateZ(80px)`;
     }
@@ -322,7 +239,9 @@ const Cards = () => {
   const handleEvents = isMobileDevice()
     ? {
         onTouchStart: handleTouchEnter,
+        // onTouchMove: handleTouchEnter,
         onTouchEnd: handleTouchEnd,
+        onTouchMoveCapture: handleTouchEnter,
       }
     : {
         onClick: handleTouchEnd,
@@ -348,7 +267,7 @@ const Cards = () => {
             // onMouseMove={handleMouseEnter}
             // onTouchEnd={handleTouchEnd}
             {...handleEvents}
-            data-side="left"
+            data-side={LEFT_SIDE}
           >
             Next Card
           </div>
@@ -360,7 +279,7 @@ const Cards = () => {
             // onMouseMove={handleMouseEnter}
             // onTouchEnd={handleTouchEnd}
             {...handleEvents}
-            data-side="right"
+            data-side={RIGHT_SIDE}
           >
             Show me!
           </div>

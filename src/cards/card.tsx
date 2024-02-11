@@ -1,4 +1,4 @@
-import { forwardRef, useRef } from "react";
+import { forwardRef } from "react";
 import CardContent from "./card_content";
 const Card = forwardRef(
   (
