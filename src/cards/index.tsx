@@ -82,7 +82,7 @@ const Cards = () => {
     const width = isMobileDevice() ? 100 : 350;
     setArcWidth(width);
     setCssVaribales({
-      "--translate-x": `-${window.innerWidth / 2 + 150}px`,
+      "--translate-x": `-${window.innerWidth / 2 + 350}px`,
       "--selecting-card-position": `${width}px`,
     });
   }, []);

@@ -9,8 +9,8 @@
 
         to {
             display: none;
-            -webkit-transform: translateX(var(--translate-x)) translateZ(50px) rotateY(0.5turn) scale3d(0.1, 0.8, 0.5);
-            transform: translateX(var(--translate-x)) translateZ(50px) rotateY(0.5turn) scale3d(0.1, 0.8, 0.5);
+            -webkit-transform: translateX(var(--translate-x)) rotateY(0.5turn) translateZ(0px) scale3d(0.1, 0.8, 0.5);
+            transform: translateX(var(--translate-x)) rotateY(0.5turn) translateZ(0px) scale3d(0.1, 0.8, 0.5);
         }
     }
 
@@ -125,7 +125,7 @@
                 }
 
                 &.lastCardSwip {
-                    transform: translateZ(0px);
+                    transform: unset;
                     display: block;
                     animation-name: slideSwipeOut;
                     animation-duration: 1s;
