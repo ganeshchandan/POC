@@ -115,6 +115,7 @@
                 background: #fff;
                 backface-visibility: hidden;
                 box-sizing: border-box;
+                z-index: -1;
 
                 .front-face,
                 .back-face {
@@ -163,7 +164,7 @@
                     z-index: 3;
                     display: block;
                     // transform: translateZ(50px);
-                    box-shadow: 5px 5px 5px #fafafa;
+                    box-shadow: 5px 2px 2px #fafafa;
                 }
 
                 &.secondCard {
