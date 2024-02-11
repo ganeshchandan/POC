@@ -1,7 +1,6 @@
 * {
     @keyframes slideSwipeOut {
         from {
-            display: block;
             -webkit-transform: perspective(300px) translateX(var(--selecting-card-position)) translateZ(50px)
                 rotateY(0.95turn) scale3d(1, 1, 0.5);
             transform: perspective(300px) translateX(var(--selecting-card-position)) translateZ(50px) rotateY(0.95turn)
@@ -10,8 +9,8 @@
 
         to {
             display: none;
-            -webkit-transform: translateX(var(--translate-x)) translateZ(50px) rotateY(0.5turn) scale3d(0.1, 0.8, 0.5);
-            transform: translateX(var(--translate-x)) translateZ(50px) rotateY(0.5turn) scale3d(0.1, 0.8, 0.5);
+            -webkit-transform: translateX(var(--translate-x)) rotateY(0.5turn) translateZ(0px) scale3d(0.1, 0.8, 0.5);
+            transform: translateX(var(--translate-x)) rotateY(0.5turn) translateZ(0px) scale3d(0.1, 0.8, 0.5);
         }
     }
 
@@ -74,26 +73,10 @@
                 transition: all 1s ease-in-out;
                 touch-action: pan-y;
             }
-            // .nextCard {
-            //     &:hover {
-            //         -webkit-transform: translate3d(-150px, 0px, 0px);
-            //         transform: translate3d(-150px, 0px, 0px);
-            //         color: #fff;
-            //         opacity: 1;
-            //     }
-            // }
-            // .showme {
-            //     &:hover {
-            //         -webkit-transform: translate3d(150px, 0px, 0px);
-            //         transform: translate3d(150px, 0px, 0px);
-            //         color: #fff;
-            //         opacity: 1;
-            //     }
-            // }
         }
         .cards {
             height: 100%;
-            position: absolute;
+            position: fixed;
             width: 100%;
             transform-style: preserve-3d;
             backface-visibility: hidden;
@@ -110,7 +93,7 @@
                 margin: auto;
                 border: 2px solid #fafafa;
                 padding: 10px;
-                transition: all 1.3s linear;
+                transition: transform 1.3s linear;
                 transform-style: preserve-3d;
                 background: #fff;
                 backface-visibility: hidden;
@@ -137,22 +120,12 @@
 
                 &.selectingCard_left,
                 &.selectingCard_right {
-                    z-index: 3;
                     display: block !important;
                     transition: transform 0s linear;
-                    perspective: 300px;
-                    // transform: perspective(300px) rotateY(-21deg) translateX(var(--selecting-card-position))
-                    // translateZ(50px) scale(1.25);
                 }
-                // &.selectingCard_right {
-                //     z-index: 3;
-                //     display: block !important;
-                //     transition: all 0s linear;
-                //     // transform: perspective(300px) rotateY(21deg) translateX(var(--selecting-card-position))
-                //     //     translateZ(50px) scale(1.25);
-                // }
 
                 &.lastCardSwip {
+                    transform: unset;
                     display: block;
                     animation-name: slideSwipeOut;
                     animation-duration: 1s;
@@ -163,7 +136,7 @@
                 &.activeCard {
                     z-index: 3;
                     display: block;
-                    // transform: translateZ(50px);
+                    transform: translateZ(50px);
                     box-shadow: 5px 2px 2px #fafafa;
                 }
 

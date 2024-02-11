@@ -73,23 +73,42 @@ const Cards = () => {
     contents[(selectedIndex + 1) % contents.length];
   const [arcWidth, setArcWidth] = useState(0);
   const [cssVaribales, setCssVaribales] = useState({});
+  const nextEventRef = useRef<{
+    timer?: NodeJS.Timeout;
+    fireNextEvent: boolean;
+  }>({ fireNextEvent: true });
 
   useEffect(() => {
     const width = isMobileDevice() ? 100 : 350;
     setArcWidth(width);
     setCssVaribales({
-      "--translate-x": `-${window.innerWidth / 2 + 150}px`,
+      "--translate-x": `-${window.innerWidth / 2 + 350}px`,
       "--selecting-card-position": `${width}px`,
     });
   }, []);
 
+  const nextEventFiring = () => {
+    if (nextEventRef.current) {
+      nextEventRef.current.fireNextEvent = false;
+      nextEventRef.current.timer = setTimeout(() => {
+        nextEventRef.current.fireNextEvent = true;
+        clearTimeout(nextEventRef.current.timer);
+      }, 1000);
+    }
+  };
+
   const handleSetSelectedCard = (event: any) => {
+    if (!nextEventRef.current.fireNextEvent) {
+      return;
+    }
     const isMobile = isMobileDevice();
     const { nativeEvent } = event;
     if (
       (isMobile && nativeEvent instanceof TouchEvent) ||
       (!isMobile && nativeEvent instanceof MouseEvent)
     ) {
+      clearPreviousSelection();
+      nextEventFiring();
       setSide("both");
       setSelectedCard(() => {
         const index = (selectedIndex + 1) % contents.length;
@@ -109,7 +128,6 @@ const Cards = () => {
     lastCardSwip = lastCardSwip === -1 ? length - 1 : lastCardSwip;
 
     const html = contents.map((content, index) => {
-      // const content = contents[index];
       let className = getClassName(
         index,
         selectedCardNo,
@@ -133,6 +151,9 @@ const Cards = () => {
   };
 
   const handleMouseEnter = (event: any) => {
+    if (!nextEventRef.current.fireNextEvent) {
+      return;
+    }
     event.stopPropagation();
     const { dataset } = event.target;
     const { side: datasetID } = dataset;
@@ -151,6 +172,9 @@ const Cards = () => {
 
   const handleTouchEnter = (event: any) => {
     event.stopPropagation();
+    if (!nextEventRef.current.fireNextEvent) {
+      return;
+    }
     const clientX = event.touches[0].clientX;
     const datasetID = clientX < window.innerWidth / 2 ? LEFT_SIDE : RIGHT_SIDE;
 
@@ -174,25 +198,33 @@ const Cards = () => {
     event.stopPropagation();
     if (side === LEFT_SIDE) {
       handleSetSelectedCard(event);
-    } else {
+    } else if (side === RIGHT_SIDE) {
       handleSetSelectedCardNo(event);
     }
   };
 
+  const clearPreviousSelection = () => {
+    const target = cardsRef.current;
+    if (target) {
+      target.style.transform = "";
+    }
+  };
+
   const handleSetSelectedCardNo = (event: any) => {
+    if (!nextEventRef.current.fireNextEvent) {
+      return;
+    }
     event.stopPropagation();
     const isMobile = isMobileDevice();
     const { nativeEvent } = event;
+    clearPreviousSelection();
     if (
       (isMobile && nativeEvent instanceof TouchEvent) ||
       (!isMobile && nativeEvent instanceof MouseEvent)
     ) {
       setSelectedCardNo(selectedIndex);
       setSide("both");
-      const target = cardsRef.current;
-      if (target) {
-        target.style.transform = "";
-      }
+      nextEventFiring();
       if (contentRef.current) {
         const target = contentRef.current;
         target.classList.remove("deSelectedCard");
@@ -201,16 +233,14 @@ const Cards = () => {
     }
   };
 
-  const handleCloseClick = () => {
-    setSelectedCardNo(-1);
-  };
-
   const onCloseSelectedCard = (event: any) => {
     event.stopPropagation();
     if (contentRef.current) {
+      nextEventFiring();
       const target = contentRef.current;
       target.classList.remove("selectedCard");
       target.classList.add("deSelectedCard");
+      clearPreviousSelection();
       setSide("reverse_both");
       setTimeout(() => {
         setSelectedCardNo(-1);
@@ -249,34 +279,15 @@ const Cards = () => {
     <div className="App" style={cssVaribales}>
       <CardContext.Provider value={{ selectedCard, setSelectedCard }}>
         <div className="cards">{renderCards()}</div>
-
         <div
           className={`showMeAndNextCard ${
             selectedCardNo !== -1 ? "cardSelected" : ""
           }`}
         >
-          <div
-            className="nextCard"
-            // onClick={handleSetSelectedCard}
-            // onTouchStart={handleTouchEnter}
-            // onMouseEnter={handleMouseEnter}
-            // onMouseMove={handleMouseEnter}
-            // onTouchEnd={handleTouchEnd}
-            {...handleEvents}
-            data-side={LEFT_SIDE}
-          >
+          <div className="nextCard" {...handleEvents} data-side={LEFT_SIDE}>
             Next Card
           </div>
-          <div
-            className="showme"
-            // onClick={handleSetSelectedCardNo}
-            // onTouchStart={handleTouchEnter}
-            // onMouseEnter={handleMouseEnter}
-            // onMouseMove={handleMouseEnter}
-            // onTouchEnd={handleTouchEnd}
-            {...handleEvents}
-            data-side={RIGHT_SIDE}
-          >
+          <div className="showme" {...handleEvents} data-side={RIGHT_SIDE}>
             Show me!
           </div>
         </div>
