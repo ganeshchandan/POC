@@ -50,6 +50,7 @@ const CardContext = createContext<{
       color: string;
       content: string;
       header: string;
+      sample: string;
     }>
   >;
 }>({});
@@ -61,6 +62,8 @@ const contents = [
     id: 0,
     color: "#0073e6",
     header: "Aihole",
+    sample:
+      "The intricately carved temples are surrounded by sandstone hills and the river Malaprabha, gifting your eyes with a marvellous view.",
     content:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries",
   },
@@ -68,6 +71,8 @@ const contents = [
     id: 1,
     color: "#e42616",
     header: "badami",
+    sample:
+      "Famous for the Badami caves, the rock-cut Temples of Mahakuta is a famous historical site built in the 7th century. Located on the banks of the Agastya Tirtha Lake",
     content:
       "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English",
   },
@@ -75,6 +80,8 @@ const contents = [
     id: 2,
     color: "#2991f5",
     header: "belur",
+    sample:
+      "Famous for its age-old Hindu and Jain temples, the towns provide an insight into the rich history of the Hoysala dynasty.",
     content:
       "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur",
   },
@@ -82,6 +89,8 @@ const contents = [
     id: 3,
     color: "#ceead6",
     header: "bidar",
+    sample:
+      "An important seat for numerous dynasties, Bidar is an important historical place in Karnataka.Once the seat of Chalukyas, Allaludin Khilji and Muhammad bin Tughluq, the city houses numerous sites and monuments reflecting the legacy of the rulers.",
     content:
       "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English",
   },
@@ -89,6 +98,8 @@ const contents = [
     id: 4,
     color: "#ee5143",
     header: "bijapur",
+    sample:
+      "Bijapur is famous for housing the biggest domes in India. You can see the influence of the Chalukyas among all the monuments, temples and elaborate gardens.",
     content:
       "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English",
   },
@@ -96,6 +107,8 @@ const contents = [
     id: 5,
     color: "#1fb254",
     header: "hampi",
+    sample:
+      "The City Of Ruins, Hampi, is known for its ancient monuments, temples and, most importantly, the remains from the Vijayanagar Empire.",
     content:
       "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English",
   },
@@ -103,6 +116,8 @@ const contents = [
     id: 6,
     color: "#202124",
     header: "Srirangapatna",
+    sample:
+      "Srirangapatna was the home of the Vijayanagara and Hoysala kingdoms. The town earns its name from the Sri Ranganatha temple, one of the largest temples in Karnataka.",
     content:
       "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur",
   },
@@ -215,6 +230,7 @@ const Cards = () => {
   };
 
   const handleTouchEnter = (event: any) => {
+    console.log("ganesh here handleTouchEnter");
     event.stopPropagation();
     const { dataset } = event.target;
     const { side: datasetID } = dataset;
@@ -261,6 +277,10 @@ const Cards = () => {
     ) {
       setSelectedCardNo(selectedIndex);
       setSide("both");
+      const target = cardsRef.current;
+      if (target) {
+        target.style.transform = "";
+      }
       if (contentRef.current) {
         const target = contentRef.current;
         target.classList.remove("deSelectedCard");
@@ -291,15 +311,14 @@ const Cards = () => {
 
   const handleSideClick = (event: any) => {};
 
-  const updatePosition = (x3: number) => {
+  const updatePosition = (x3: number, drawingDirection: string) => {
     const current = cardsRef.current;
     if (current) {
       const multiplier = x3 < 0 ? -1 : 1;
-      const rotateY = x3 * multiplier * 0.06;
+      const rotateY =
+        x3 * multiplier * 0.06 * (drawingDirection === "left" ? -1 : 1);
       x3 = x3 - (current.clientWidth / 2) * multiplier * 0.06;
-      current.style.transform = `perspective(300px) rotateY(${
-        side === "left" ? "-" : ""
-      }${rotateY}deg) translateX(${x3}px) translateZ(70px)`;
+      current.style.transform = `perspective(300px) rotateY(${rotateY}deg) translateX(${x3}px) translateZ(70px)`;
     }
   };
 

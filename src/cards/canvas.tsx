@@ -11,6 +11,7 @@ const arcDraw = (
   nextColor: string
 ) => {
   if (ctx) {
+    ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
     ctx.bezierCurveTo(x2, y2, x3, y3, x4, y4);
@@ -19,6 +20,7 @@ const arcDraw = (
     ctx.lineTo(x1, y1);
     ctx.fillStyle = nextColor;
     ctx.fill("nonzero");
+    ctx.closePath();
   }
 };
 
@@ -50,7 +52,7 @@ interface ICanvas {
   backgroundColor: string;
   nextColor: string;
   arcWidth: number;
-  updatePosition: (width: number) => void;
+  updatePosition: (width: number, angleDirection: string) => void;
 }
 
 const Canvas = ({
@@ -61,18 +63,35 @@ const Canvas = ({
   updatePosition,
 }: ICanvas) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const timerRef = useRef<NodeJS.Timeout>();
+  const timerRef = useRef<{
+    timer?: NodeJS.Timeout;
+    width: number;
+    startPosition: number;
+    color: string;
+  }>({
+    startPosition: 0,
+    width: 0,
+    color: "rgba(0, 0, 0, 0.3)",
+  });
 
   useEffect(() => {
-    timerRef.current && clearTimeout(timerRef.current);
+    const width = window.innerWidth / 2;
+    timerRef.current.width = width;
+    timerRef.current.startPosition = width;
+  }, []);
+
+  useEffect(() => {
+    clearTimeout(timerRef.current.timer);
     const width = window.innerWidth;
     let halfWidth = width / 2;
     const quterWidth = halfWidth / 2;
     const height = window.innerHeight;
 
     if (side === "both") {
+      timerRef.current.width = timerRef.current.startPosition;
       bothSideCanvas(width, height, 0, nextColor);
     } else if (side === "reverse_both") {
+      timerRef.current.width = 0;
       bothSideReverseCanvas(
         halfWidth,
         height,
@@ -81,38 +100,61 @@ const Canvas = ({
         (halfWidth * 0.55) / 100
       );
     } else if (side !== "none") {
-      oneSideCanvas(side, halfWidth, arcWidth, 0, height, nextColor);
+      const endPosition =
+        timerRef.current.startPosition + (side === "left" ? -350 : 350);
+      const addOrDelete = timerRef.current.width < endPosition ? 1 : -1;
+
+      oneSideCanvas(
+        height,
+        nextColor,
+        addOrDelete,
+        endPosition,
+        side,
+        // timerRef.current.width,
+        arcWidth
+      );
     }
   }, [side]);
 
   const oneSideCanvas = (
-    side: TSide,
-    width: number,
-    arcWidth: number,
-    curveWidth: number,
     height: number,
-    nextColor: string
+    nextColor: string,
+    addOrDelete: number,
+    endPosition: number,
+    side: TSide,
+    arcWidth: number
   ) => {
+    if (side !== "left" && side !== "right") {
+      return;
+    }
+
     const ctx = canvasRef.current?.getContext("2d");
     if (ctx) {
+      ctx.clearRect(0, 0, 3000, 3000);
+      const width = timerRef.current.startPosition;
+      const drwaingWidth = timerRef.current.width + 2 * addOrDelete;
+      const curveWidth = width - drwaingWidth;
       let x3 = 0;
       let x2 = 0;
       let stopDraw = false;
       const curvePosition = curveWidth * 0.7;
       ctx.clearRect(0, 0, 3000, 3000);
 
-      if (side === "left") {
-        x2 = width - curveWidth;
-        x3 = x2 - curvePosition;
-        stopDraw = x3 <= width - arcWidth;
-      } else {
-        x2 = width + curveWidth;
-        x3 = x2 + curvePosition;
-        stopDraw = x3 >= width + arcWidth;
-        nextColor = "rgba(0, 0, 0, 0.3)";
+      x2 = width - curveWidth;
+      x3 = x2 - curvePosition;
+
+      if (
+        (addOrDelete === -1 && x3 <= endPosition) ||
+        (addOrDelete === 1 && x3 >= endPosition)
+      ) {
+        x3 = endPosition;
       }
 
-      updatePosition(x3 - width);
+      const canvasColor = x3 < width ? nextColor : "rgba(0, 0, 0, 0.3)";
+
+      updatePosition(x3 - width, x3 < width ? "left" : "right");
+
+      timerRef.current.width = drwaingWidth;
 
       arcDraw(
         ctx,
@@ -121,24 +163,25 @@ const Canvas = ({
         [x3, height / 2],
         [x2, height],
         [width, height],
-        nextColor
+        canvasColor
       );
 
-      if (!stopDraw) {
-        clearTimeout(timerRef.current);
+      if (x3 !== endPosition) {
+        clearTimeout(timerRef.current.timer);
         const timer = setTimeout(
           () =>
             oneSideCanvas(
-              side,
-              width,
-              arcWidth,
-              curveWidth + 1,
               height,
-              nextColor
+              nextColor,
+              addOrDelete,
+              endPosition,
+              side,
+              // width,
+              arcWidth
             ),
           0
         );
-        timerRef.current = timer;
+        timerRef.current.timer = timer;
       }
     }
   };
@@ -168,14 +211,14 @@ const Canvas = ({
         nextColor
       );
       if (x4 >= 0) {
-        clearTimeout(timerRef.current);
+        clearTimeout(timerRef.current.timer);
         const timer = setTimeout(
           () => bothSideCanvas(width, height, count + 1, nextColor),
           0
         );
-        timerRef.current = timer;
+        timerRef.current.timer = timer;
       } else {
-        // ctx.reset();
+        timerRef.current.width = timerRef.current.startPosition;
       }
     }
   };
@@ -191,6 +234,7 @@ const Canvas = ({
     if (ctx) {
       ctx.clearRect(0, 0, 3000, 3000);
       if (quterWidth <= 0) {
+        timerRef.current.width = timerRef.current.startPosition;
         return;
       }
       const y1 = 0;
@@ -212,7 +256,7 @@ const Canvas = ({
         nextColor
       );
 
-      clearTimeout(timerRef.current);
+      clearTimeout(timerRef.current.timer);
       const timer = setTimeout(
         () =>
           bothSideReverseCanvas(
@@ -224,7 +268,7 @@ const Canvas = ({
           ),
         0
       );
-      timerRef.current = timer;
+      timerRef.current.timer = timer;
     }
   };
 
