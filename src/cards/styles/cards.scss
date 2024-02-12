@@ -82,8 +82,6 @@
             backface-visibility: hidden;
             .card {
                 display: none;
-                height: 400px;
-                width: 300px;
                 border-radius: 10px;
                 position: absolute;
                 top: 0;
@@ -137,7 +135,7 @@
                     z-index: 3;
                     display: block;
                     transform: translateZ(50px);
-                    box-shadow: 5px 2px 2px #fafafa;
+                    // box-shadow: 5px 2px 2px #fafafa;
                 }
 
                 &.secondCard {

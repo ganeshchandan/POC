@@ -116,7 +116,7 @@ const Canvas = ({
         // arcWidth
       );
     }
-  }, [side]);
+  }, [side, arcWidth]);
 
   const oneSideCanvas = (
     height: number,

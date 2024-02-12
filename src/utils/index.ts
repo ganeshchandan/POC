@@ -1,7 +1,9 @@
 export const getArcWidthForSide = (event: MouseEvent, side: string) => {
   const windowWidth = window.innerWidth;
   const mousePosition = event.pageX;
-  return sideAndCalculationMapper[side](mousePosition, windowWidth);
+  return isMobileDevice()
+    ? sideAndCalculationMapper[side](mousePosition, windowWidth)
+    : 350;
 };
 
 const rightSideCalcuation = (mousePosition: number, windowWidth: number) => {

@@ -175,23 +175,25 @@ const Cards = () => {
     if (!nextEventRef.current.fireNextEvent) {
       return;
     }
+    const innerWidth = window.innerWidth / 2;
     const clientX = event.touches[0].clientX;
-    const datasetID = clientX < window.innerWidth / 2 ? LEFT_SIDE : RIGHT_SIDE;
+    const datasetID = clientX < innerWidth ? LEFT_SIDE : RIGHT_SIDE;
 
     if (side !== datasetID) {
       setSide(() => datasetID);
     }
+
+    const width = Math.abs(innerWidth - clientX);
+    setArcWidth(width);
 
     if (isMobileDevice()) {
       setCssVaribales((cssVaribales) => ({
         ...cssVaribales,
         [`--selecting-card-position`]: `${
           datasetID === LEFT_SIDE ? "-" : ""
-        }100px`,
+        }${width}px`,
       }));
     }
-
-    // setArcWidth(getArcWidthForSide(event, datasetID));
   };
 
   const handleTouchEnd = (event: any) => {
@@ -282,7 +284,7 @@ const Cards = () => {
         <div
           className={`showMeAndNextCard ${
             selectedCardNo !== -1 ? "cardSelected" : ""
-          }`}
+          } selectingCard_${side}`}
         >
           <div className="nextCard" {...handleEvents} data-side={LEFT_SIDE}>
             Next Card
