@@ -184,7 +184,7 @@ const Cards = () => {
     }
 
     const width = Math.abs(innerWidth - clientX);
-    setArcWidth(width);
+    // setArcWidth(width);
 
     if (isMobileDevice()) {
       setCssVaribales((cssVaribales) => ({
