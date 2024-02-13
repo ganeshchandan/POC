@@ -90,7 +90,10 @@ const Canvas = ({
 
     if (side === "both") {
       timerRef.current.width = timerRef.current.startPosition;
-      bothSideCanvas(width, height, 0, nextColor);
+      const halfWidth = width / 2;
+      const step = Math.ceil((halfWidth * 1.6) / 100);
+      console.log(step);
+      bothSideCanvas(width / 2, height, 0, nextColor, step);
     } else if (side === "reverse_both") {
       timerRef.current.width = 0;
       bothSideReverseCanvas(
@@ -187,16 +190,17 @@ const Canvas = ({
   };
 
   const bothSideCanvas = (
-    width: number,
+    halfWidth: number,
     height: number,
     count: number,
-    nextColor: string
+    nextColor: string,
+    step: number
   ) => {
     const ctx = canvasRef.current?.getContext("2d");
-    const halfWidth = width / 2;
+    // const halfWidth = width / 2;
     if (ctx) {
-      let drawWidth = 15 * count;
-      const arcWidth = (15 * count * count) / 100;
+      let drawWidth = step * count;
+      const arcWidth = (step * count * count) / 100;
       const x1 = halfWidth + drawWidth;
       const x4 = halfWidth - drawWidth;
 
@@ -213,7 +217,7 @@ const Canvas = ({
       if (x4 >= 0) {
         clearTimeout(timerRef.current.timer);
         const timer = setTimeout(
-          () => bothSideCanvas(width, height, count + 1, nextColor),
+          () => bothSideCanvas(halfWidth, height, count + 1, nextColor, step),
           0
         );
         timerRef.current.timer = timer;
