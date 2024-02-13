@@ -16,7 +16,26 @@
             }
         }
     }
+    @media (min-width: 500px) {
+        .card {
+            height: 400px;
+            width: 300px;
+        }
+    }
     @media only screen and (max-width: 500px) {
+        .card {
+            height: 300px;
+            width: 230px;
+        }
+        .cardPreview {
+            .cardPreviewContent {
+                -webkit-line-clamp: 4;
+                display: -webkit-box;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                -webkit-box-orient: vertical;
+            }
+        }
         .showMeAndNextCard {
             > .nextCard,
             .showme {
@@ -36,16 +55,16 @@
     }
     @media (hover: hover) {
         .showMeAndNextCard {
-            .nextCard {
-                &:hover {
+            &.selectingCard_left {
+                .nextCard {
                     -webkit-transform: translate3d(-150px, 0px, 0px);
                     transform: translate3d(-150px, 0px, 0px);
                     color: #fff !important;
                     opacity: 1;
                 }
             }
-            .showme {
-                &:hover {
+            &.selectingCard_right {
+                .showme {
                     -webkit-transform: translate3d(150px, 0px, 0px);
                     transform: translate3d(150px, 0px, 0px);
                     color: #fff !important;

@@ -15,7 +15,7 @@ const CardContent = ({
             className="cardPreviewContent"
             // style={{ color: color as string }}
           >
-            <p>{sample}</p>
+            {sample}
           </article>
           <div className="cardPreviewImage">
             <img src={`images/${header}.jpg`} alt="images"></img>

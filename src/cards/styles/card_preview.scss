@@ -26,6 +26,12 @@
             text-align: start;
             font-size: 16px;
             color: #333;
+            // -webkit-line-clamp: 5;
+            // display: -webkit-box;
+            // overflow: hidden;
+            // text-overflow: ellipsis;
+            // -webkit-box-orient: vertical;
+            // margin-bottom: 5px;
         }
         .cardPreviewImage {
             padding: 10px;
