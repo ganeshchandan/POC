@@ -32,3 +32,6 @@ export const formatCssVaribales = (varibales: { [key: string]: string }) => {
 
 export const isMobileDevice = () =>
   navigator.userAgent.toLowerCase().includes("mobi");
+
+export const getAnimationStep = (halfWidth: number, percentage: number) =>
+  Math.ceil((halfWidth * percentage) / 100);

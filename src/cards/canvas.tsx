@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { TSide } from ".";
+import { getAnimationStep } from "../utils";
 import { LEFT_SIDE, RIGHT_SIDE } from "./constant";
 
 const arcDraw = (
@@ -90,10 +91,14 @@ const Canvas = ({
 
     if (side === "both") {
       timerRef.current.width = timerRef.current.startPosition;
-      const halfWidth = width / 2;
-      const step = Math.ceil((halfWidth * 1.6) / 100);
-      console.log(step);
-      bothSideCanvas(width / 2, height, 0, nextColor, step);
+
+      bothSideCanvas(
+        halfWidth,
+        height,
+        0,
+        nextColor,
+        getAnimationStep(halfWidth, 1.6)
+      );
     } else if (side === "reverse_both") {
       timerRef.current.width = 0;
       bothSideReverseCanvas(
@@ -101,7 +106,8 @@ const Canvas = ({
         height,
         quterWidth,
         "rgba(0, 0, 0, 0.3)",
-        (halfWidth * 0.55) / 100
+        (halfWidth * 0.55) / 150,
+        getAnimationStep(halfWidth, 0.86)
       );
     } else if (side !== "none") {
       const endPosition =
@@ -232,7 +238,8 @@ const Canvas = ({
     y3: number,
     quterWidth: number,
     nextColor: string,
-    singlePostion: number
+    singlePostion: number,
+    step: number
   ) => {
     const ctx = canvasRef.current?.getContext("2d");
     if (ctx) {
@@ -243,7 +250,7 @@ const Canvas = ({
       }
       const y1 = 0;
       const y2 = y3 / 2;
-      let count = quterWidth / 15;
+      let count = quterWidth / step;
       const arcWidth = (quterWidth * count) / 100;
       const drawWidth = quterWidth - arcWidth;
       const x2 = halfWidth + quterWidth;
@@ -268,7 +275,8 @@ const Canvas = ({
             y3,
             quterWidth - singlePostion,
             nextColor,
-            singlePostion
+            singlePostion,
+            step
           ),
         0
       );
