@@ -43,7 +43,6 @@ const App = () => {
   return (
     <>
       {serviceWorkerUpdated && <Msg />}
-      <span>PWA TEST</span>
       <Cards />
     </>
   );
