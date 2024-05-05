@@ -43,6 +43,7 @@ const App = () => {
   return (
     <>
       {serviceWorkerUpdated && <Msg />}
+      <span>TEST</span>
       <Cards />
     </>
   );
