@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { TSide } from ".";
+import { getAnimationStep } from "../utils";
 import { LEFT_SIDE, RIGHT_SIDE } from "./constant";
 
 const arcDraw = (
@@ -90,7 +91,14 @@ const Canvas = ({
 
     if (side === "both") {
       timerRef.current.width = timerRef.current.startPosition;
-      bothSideCanvas(width, height, 0, nextColor);
+
+      bothSideCanvas(
+        halfWidth,
+        height,
+        0,
+        nextColor,
+        getAnimationStep(halfWidth, 1.6)
+      );
     } else if (side === "reverse_both") {
       timerRef.current.width = 0;
       bothSideReverseCanvas(
@@ -98,7 +106,8 @@ const Canvas = ({
         height,
         quterWidth,
         "rgba(0, 0, 0, 0.3)",
-        (halfWidth * 0.55) / 100
+        (halfWidth * 0.55) / 150,
+        getAnimationStep(halfWidth, 0.86)
       );
     } else if (side !== "none") {
       const endPosition =
@@ -187,16 +196,17 @@ const Canvas = ({
   };
 
   const bothSideCanvas = (
-    width: number,
+    halfWidth: number,
     height: number,
     count: number,
-    nextColor: string
+    nextColor: string,
+    step: number
   ) => {
     const ctx = canvasRef.current?.getContext("2d");
-    const halfWidth = width / 2;
+    // const halfWidth = width / 2;
     if (ctx) {
-      let drawWidth = 15 * count;
-      const arcWidth = (15 * count * count) / 100;
+      let drawWidth = step * count;
+      const arcWidth = (step * count * count) / 100;
       const x1 = halfWidth + drawWidth;
       const x4 = halfWidth - drawWidth;
 
@@ -213,7 +223,7 @@ const Canvas = ({
       if (x4 >= 0) {
         clearTimeout(timerRef.current.timer);
         const timer = setTimeout(
-          () => bothSideCanvas(width, height, count + 1, nextColor),
+          () => bothSideCanvas(halfWidth, height, count + 1, nextColor, step),
           0
         );
         timerRef.current.timer = timer;
@@ -228,7 +238,8 @@ const Canvas = ({
     y3: number,
     quterWidth: number,
     nextColor: string,
-    singlePostion: number
+    singlePostion: number,
+    step: number
   ) => {
     const ctx = canvasRef.current?.getContext("2d");
     if (ctx) {
@@ -239,7 +250,7 @@ const Canvas = ({
       }
       const y1 = 0;
       const y2 = y3 / 2;
-      let count = quterWidth / 15;
+      let count = quterWidth / step;
       const arcWidth = (quterWidth * count) / 100;
       const drawWidth = quterWidth - arcWidth;
       const x2 = halfWidth + quterWidth;
@@ -264,7 +275,8 @@ const Canvas = ({
             y3,
             quterWidth - singlePostion,
             nextColor,
-            singlePostion
+            singlePostion,
+            step
           ),
         0
       );
