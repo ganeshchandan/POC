@@ -1,8 +1,6 @@
 const cacheName = "pwa-test";
 const appShellFiles = [
-  "/",
   "/index.html",
-  "/static/*",
   "/favicon.ico",
   "/logo192.png",
   "/logo512.png",
