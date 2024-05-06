@@ -64,25 +64,24 @@ export function register(config) {
 function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl)
-    .then((registration) => {
-      registration.addEventListener("updatefound", () => {
-        newWorker = registration.installing;
-
-        newWorker.addEventListener("statechange", () => {
-          // Has service worker state changed?
-          switch (newWorker.state) {
+    .then((reg) => {
+      reg.onupdatefound = () => {
+        const installingWorker = reg.installing;
+        installingWorker.onstatechange = () => {
+          switch (installingWorker.state) {
             case "installed":
-              // There is a new service worker available, show the notification
               if (navigator.serviceWorker.controller) {
-                console.log("ganesh here");
-                config.onUpdate(registration);
+                // new update available
+                config.onUpdate(reg);
+              } else {
+                // no update available
               }
               break;
             default:
               break;
           }
-        });
-      });
+        };
+      };
       // registration.onupdatefound = () => {
       //   const installingWorker = registration.installing;
       //   console.log("here installingWorker", installingWorker);
