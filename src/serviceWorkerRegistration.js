@@ -20,11 +20,11 @@ const isLocalhost = Boolean(
     )
 );
 
-let newWorker;
+// let newWorker;
 
-document.getElementById("reload").addEventListener("click", function () {
-  newWorker.postMessage({ action: "skipWaiting" });
-});
+// document.getElementById("reload").addEventListener("click", function () {
+//   newWorker.postMessage({ action: "skipWaiting" });
+// });
 
 export function register(config) {
   if ("serviceWorker" in navigator) {
