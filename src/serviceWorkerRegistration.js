@@ -20,6 +20,12 @@ const isLocalhost = Boolean(
     )
 );
 
+let newWorker;
+
+document.getElementById("reload").addEventListener("click", function () {
+  newWorker.postMessage({ action: "skipWaiting" });
+});
+
 export function register(config) {
   if ("serviceWorker" in navigator) {
     // The URL constructor is available in all browsers that support SW.
@@ -59,45 +65,61 @@ function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
-      registration.onupdatefound = () => {
-        const installingWorker = registration.installing;
-        console.log("here installingWorker", installingWorker);
-        if (installingWorker == null) {
-          return;
-        }
-        installingWorker.onstatechange = () => {
-          if (installingWorker.state === "installed") {
-            console.log(
-              navigator.serviceWorker.controller,
-              "navigator.serviceWorker.controller"
-            );
-            if (navigator.serviceWorker.controller) {
-              // At this point, the updated precached content has been fetched,
-              // but the previous service worker will still serve the older
-              // content until all client tabs are closed.
-              console.log(
-                "New content is available and will be used when all " +
-                  "tabs for this page are closed. See https://cra.link/PWA."
-              );
+      registration.addEventListener("updatefound", () => {
+        newWorker = registration.installing;
 
-              // Execute callback
-              if (config && config.onUpdate) {
+        newWorker.addEventListener("statechange", () => {
+          // Has service worker state changed?
+          switch (newWorker.state) {
+            case "installed":
+              // There is a new service worker available, show the notification
+              if (navigator.serviceWorker.controller) {
+                console.log("ganesh here");
                 config.onUpdate(registration);
               }
-            } else {
-              // At this point, everything has been precached.
-              // It's the perfect time to display a
-              // "Content is cached for offline use." message.
-              console.log("Content is cached for offline use.");
-
-              // Execute callback
-              if (config && config.onSuccess) {
-                config.onSuccess(registration);
-              }
-            }
+              break;
+            default:
+              break;
           }
-        };
-      };
+        });
+      });
+      // registration.onupdatefound = () => {
+      //   const installingWorker = registration.installing;
+      //   console.log("here installingWorker", installingWorker);
+      //   if (installingWorker == null) {
+      //     return;
+      //   }
+      //   installingWorker.onstatechange = () => {
+      //     if (installingWorker.state === "installed") {
+      //       console.log(
+      //         navigator.serviceWorker.controller,
+      //         "navigator.serviceWorker.controller"
+      //       );
+      //       if (navigator.serviceWorker.controller) {
+      //         // At this point, the updated precached content has been fetched,
+      //         // but the previous service worker will still serve the older
+      //         // content until all client tabs are closed.
+      //         console.log(
+      //           "New content is available and will be used when all " +
+      //             "tabs for this page are closed. See https://cra.link/PWA."
+      //         );
+      //         // Execute callback
+      //         if (config && config.onUpdate) {
+      //           config.onUpdate(registration);
+      //         }
+      //       } else {
+      //         // At this point, everything has been precached.
+      //         // It's the perfect time to display a
+      //         // "Content is cached for offline use." message.
+      //         console.log("Content is cached for offline use.");
+      //         // Execute callback
+      //         if (config && config.onSuccess) {
+      //           config.onSuccess(registration);
+      //         }
+      //       }
+      //     }
+      // };
+      // };
     })
     .catch((error) => {
       console.error("Error during service worker registration:", error);
