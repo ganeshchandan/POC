@@ -7,13 +7,13 @@ const appShellFiles = [
 ];
 
 /* Start the service worker and cache all of the app's content */
-this.addEventListener("install", function (event) {
-  event.waitUntil(
-    caches.open(cacheName).then(function (cache) {
-      return cache.addAll(appShellFiles);
-    })
-  );
-});
+// this.addEventListener("install", function (event) {
+//   event.waitUntil(
+//     caches.open(cacheName).then(function (cache) {
+//       return cache.addAll(appShellFiles);
+//     })
+//   );
+// });
 
 this.addEventListener("fetch", function (event) {
   event.respondWith(
@@ -21,4 +21,10 @@ this.addEventListener("fetch", function (event) {
       return response || fetch(event.request);
     })
   );
+});
+this.addEventListener("message", function (event) {
+  console.log("messaging");
+  if (event.data.action === "skipWaiting") {
+    this.skipWaiting();
+  }
 });
